@@ -12,7 +12,7 @@
         @routes
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-gradient-to-r from-[#E6E6E6] via-pink-100 to-[#E6E6E6] h-full p-12 text-slate-800" x-data="welcome">
+    <body class="bg-gradient-to-r from-[#E6E6E6] via-pink-100 to-[#E6E6E6] h-full p-12 text-slate-800" x-data="welcome({ csrfToken: '{{ csrf_token() }}' })">
         {{ $main_wrapper }}
 
         <x-modal-wrapper var="showAccountModal" title="My Account">
@@ -36,14 +36,15 @@
                         </small>
                         <small class="underline underline-offset-2 font-semibold">Forgot password</small>
                     </div>
-                    <button class="bg-indigo-300 text-slate-800 font-semibold w-[105px] rounded text-xs py-1 mx-auto">Sign In</button>
+                    <button x-show="!login.showSuccess" class="bg-indigo-300 text-slate-800 font-semibold w-[105px] rounded text-xs py-1 mx-auto" @click="signInBtnClicked">Sign In</button>    
+                    <x-svg.spinner var="login.showSuccess" />
                     <small class="mt-4">Dont have an account? <span class="underline underline-offset-2 font-semibold">Create account</span></small>
                 </div>
             </x-slot>
         </x-modal-wrapper>
 
         <script>
-            const welcome = () => ({
+            const welcome = (e) => ({
                 showAccountModal: false,
                 toggle: true,
                 login: {
@@ -63,7 +64,26 @@
                         this.success.show = false;
                         this.login.remember = false;
                     })
-                }
+                },
+                async signInBtnClicked() {
+                    this.login.showSuccess = true;
+                    const response = await fetch(route('post.login'), {
+                        method: 'post',
+                        body: JSON.stringify({
+                            email: this.login.email,
+                            password: this.login.password,
+                            remember: this.login.remember
+                        }),
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                    console.log(json)
+                },
+                ...e
             })
         </script>
     </body>
