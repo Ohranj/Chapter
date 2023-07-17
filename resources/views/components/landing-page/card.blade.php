@@ -1,0 +1,1 @@
+<div class="min-w-[310px] aspect-video rounded-3xl shadow shadow-gray-200 p-4 mb-auto lg:mr-[125px] bg-gray-300 hover:scale-[1.01] cursor-pointer">Flip to reveal QR Code</div>
