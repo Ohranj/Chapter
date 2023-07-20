@@ -138,8 +138,8 @@
                             email: this.create.email,
                             password: this.create.password,
                             password_confirmation: this.create.password_confirmation,
-                            name: 'Alex',
-                            surname: 'Dorrington'
+                            name: this.create.name,
+                            surname: this.create.sur
                         }),
                         headers: {
                             'X-CSRF-TOKEN': this.csrfToken,

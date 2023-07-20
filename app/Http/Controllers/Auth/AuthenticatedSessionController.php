@@ -16,6 +16,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): JsonResponse
     {
+        Auth::attempt($request->only(['email', 'password']));
         // $request->authenticate();
         $request->session()->regenerate();
         return response()->json([ 'success' => true, 'message' => 'Sign in successfull' ], 200);
@@ -26,7 +27,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
 
