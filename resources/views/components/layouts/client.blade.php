@@ -42,11 +42,21 @@
             </x-slot>
         </x-modal-wrapper>
 
-        <x-modal-wrapper var="showCreateAccountModal" title="CreateAccount">
+        <x-modal-wrapper var="showCreateAccountModal" title="Create Account">
             <x-slot name="content">
                 <div class="p-6 text-center text-white flex flex-col gap-2 sm:w-2/3 mx-auto">
                     <h2 class="text-lg font-semibold mb-4">Create your Account</h2>
                     <p>Get started in seconds using the form below.</p>
+                    <div class="flex gap-2">
+                        <div class="flex flex-col grow">
+                            <label class="font-semibold text-xs text-left">Name</label>
+                            <input type="email" placeholder="Enter your forename" class="rounded p-1 text-slate-800 font-semibold w-full" x-model="create.name" />
+                        </div>
+                        <div class="flex flex-col grow">
+                            <label class="font-semibold text-xs text-left">Surname</label>
+                            <input type="email" placeholder="Enter your surname" class="rounded p-1 text-slate-800 font-semibold w-full" x-model="create.surname" />
+                        </div>
+                    </div>
                     <div class="flex flex-col">
                         <label class="font-semibold text-xs text-left">Email</label>
                         <input type="email" placeholder="Enter your email" class="rounded p-1 text-slate-800 font-semibold" x-model="create.email" />
@@ -57,7 +67,7 @@
                     </div>
                     <div class="flex flex-col">
                         <label class="font-semibold text-xs text-left">Confirm your Password</label>
-                        <input type="password" placeholder="Enter your password" class="rounded p-1 text-slate-800 font-semibold" x-model="create.password_confirmation" />
+                        <input type="password" placeholder="Confirm your password" class="rounded p-1 text-slate-800 font-semibold" x-model="create.password_confirmation" />
                     </div>
                     <button x-show="!create.showSuccess" class="bg-indigo-300 text-slate-800 font-semibold w-[105px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="createAccountBtnClicked">Sign In</button>    
                     <x-svg.spinner var="create.showSuccess" />
@@ -80,6 +90,8 @@
                     clientMessage: '',
                 },
                 create: {
+                    name: '',
+                    surname: '',
                     email: '',
                     password: '',
                     password_confirmation: '',
