@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Card Pilot</title>
+        <title>Card Pilot - Welcome</title>
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -35,6 +35,7 @@
                         </small>
                         <small class="underline underline-offset-2 font-semibold cursor-pointer">Forgot password</small>
                     </div>
+                    <p x-cloak x-show="login.errorMessage" class="text-red-500 font-semibold" x-text="login.errorMessage"></p>
                     <button x-show="!login.showSuccess" class="bg-indigo-300 text-slate-800 font-semibold w-[105px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="signInBtnClicked">Sign In</button>    
                     <x-svg.spinner var="login.showSuccess" />
                     <small class="mt-4">Dont have an account? <span class="underline underline-offset-2 font-semibold cursor-pointer" @click="showAccountModal = false; showCreateAccountModal = true">Create account</span></small>
@@ -85,9 +86,8 @@
                     email: '',
                     password: '',
                     remember: false,
-                    showError: false,
                     showSuccess: false,
-                    clientMessage: '',
+                    errorMessage: '',
                 },
                 create: {
                     name: '',
@@ -125,10 +125,14 @@
                     })
                     const json = await response.json();
                     if (response.status != 200) {
+                        this.login.showSuccess = false;
+                        this.login.errorMessage = json.message;
                         return;
                     }
-                    await new Promise((res) => setTimeout(() => res(), 1500))
+                    await new Promise((res) => setTimeout(() => res(), 750))
                     this.login.showSuccess = false;
+                    location.href = '/dashboard';
+                    
                 },
                 async createAccountBtnClicked() {
                     this.create.showSuccess = true;

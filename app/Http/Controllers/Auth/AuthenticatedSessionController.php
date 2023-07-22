@@ -16,7 +16,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): JsonResponse
     {
-        Auth::attempt($request->only(['email', 'password']));
+        $authenticated = Auth::attempt($request->only(['email', 'password']));
+        if (!$authenticated) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'We are unable to validate the provided credentials. Please check and try again.'
+            ], 422);
+        }
         // $request->authenticate();
         $request->session()->regenerate();
         return response()->json([ 'success' => true, 'message' => 'Sign in successfull' ], 200);
