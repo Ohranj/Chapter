@@ -20,7 +20,7 @@ class AuthenticatedSessionController extends Controller
         if (!$authenticated) {
             return new JsonResponse([
                 'success' => false,
-                'message' => 'We are unable to validate the provided credentials. Please check and try again.'
+                'message' => 'We are unable to validate these credentials. Please check and try again.'
             ], 422);
         }
         // $request->authenticate();

@@ -24,7 +24,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(CreateAccountRequest $request, CreateSingleUser $createSingleUser, CreateSingleLog $createSingleLog): JsonResponse
+    public function __invoke(CreateAccountRequest $request, CreateSingleUser $createSingleUser, CreateSingleLog $createSingleLog): JsonResponse
     {
         $user = $createSingleUser->run($request->all());
         
