@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\User\CreateSingleUser;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\CreateAccountRequest;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Actions\User\CreateSingleUser;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\Auth\CreateAccountRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -25,7 +26,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // Auth::login($user);
+        Auth::login($user);
 
         return new JsonResponse([ 'success' => true, 'message' => 'Account created' ], 201);
     }

@@ -1,10 +1,10 @@
-<x-layouts.client>
+<x-layouts.guest>
     <x-slot name="main_wrapper">
         <div class="flex flex-col h-full">
             <x-landing-page.navbar></x-landing-page.navbar>
             <div class="self-center grow flex flex-col justify-around relative w-full xl:w-2/5">
                 <div class="absolute w-full text-center flex flex-col items-center gap-8" x-show="toggle" x-transition.duration.700ms>
-                    <p>Card Pilot offers a unique and modern approach towards sharing your personal business card amongst your client base. We simplify the process of generating leads and maintaining contact. For more information around what we offer, click the <q class="underline font-semibold decoration-2 underline-offset-2">discover</q> tab above.</p>
+                    <p>Card Pilot offers a unique and modern approach towards sharing your personal business card amongst your guest base. We simplify the process of generating leads and maintaining contact. For more information around what we offer, click the <q class="underline font-semibold decoration-2 underline-offset-2">discover</q> tab above.</p>
                     <x-svg.undraw_professional_card />
                 </div>
                 <div class="absolute w-full text-center flex flex-col items-center gap-8" x-cloak x-show="!toggle" x-transition.duration.700ms>
