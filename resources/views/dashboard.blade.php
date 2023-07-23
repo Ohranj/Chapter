@@ -2,9 +2,9 @@
     <x-slot name="main_wrapper">
         <div class="flex flex-col h-full gap-2">
             <x-navbarTop></x-navbarTop>
-            <div class="flex grow gap-2">
+            <div class="flex grow gap-8">
                 <x-navbarSide />
-                <div class="border border-white grow">
+                <div class="grow py-4">
                     My Current book
                     My Timeline
                     Whats popular
