@@ -12,7 +12,15 @@
         @routes
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-gradient-to-r from-[#E6E6E6] via-pink-100 to-[#E6E6E6] h-full p-12 text-slate-800">
+    <body class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 h-full p-12 text-white" x-data="auth({ csrfToken: '{{ csrf_token() }}' })">
         {{ $main_wrapper }}
+
+        <script>
+            const auth = () => ({
+                init() {
+                    console.log('Auth')
+                }
+            })
+        </script>
     </body>
 </html>

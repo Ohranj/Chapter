@@ -1,5 +1,17 @@
 <x-layouts.auth>
     <x-slot name="main_wrapper">
-        <p>here</p>
+        <div class="flex flex-col h-full gap-2">
+            <x-navbarTop></x-navbarTop>
+            <div class="flex grow gap-2">
+                <x-navbarSide />
+                <div class="border border-white grow">
+                    My Current book
+                    My Timeline
+                    Whats popular
+                    Add a status
+                    View my friendn and their status / current book
+                </div>
+            </div>
+        </div>
     </x-slot>
 </x-layouts.auth>

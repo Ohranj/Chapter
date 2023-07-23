@@ -49,4 +49,11 @@ class User extends Authenticatable
     public function activity() {
         return $this->morphMany(ActivityLog::class, 'loggable');
     }
+
+    /**
+     * Methods
+     */
+    public function fullName() {
+        return $this->name . ' ' . $this->surname;
+    }
 }

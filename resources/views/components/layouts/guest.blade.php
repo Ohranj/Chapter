@@ -12,8 +12,35 @@
         @routes
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-gradient-to-r from-[#E6E6E6] via-pink-100 to-[#E6E6E6] h-full p-12 text-slate-800" x-data="welcome({ csrfToken: '{{ csrf_token() }}' })">
+    <body class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 h-full p-12 text-white" x-data="welcome({ csrfToken: '{{ csrf_token() }}' })">
         {{ $main_wrapper }}
+
+        <x-modal-wrapper var="showContactModal" title="Contact Me">
+            <x-slot name="content">
+                <div class="p-6 text-center text-white flex flex-col gap-2 sm:w-2/3 mx-auto">
+                    <h2 class="text-lg font-semibold mb-4">Please get in touch!</h2>
+                    <p>Use the form below to send me a message.</p>
+                    <div class="flex flex-col">
+                        <label class="font-semibold text-xs text-left">Email</label>
+                        <input type="email" placeholder="Enter your email" class="rounded p-1 text-slate-800 font-semibold" x-model="contact.email" />
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-semibold text-xs text-left">Reason for the message</label>
+                        <select class="rounded px-1 py-2 text-slate-800 font-semibold" x-model="contact.reason">
+                            <option value="FEEDBACK">Feedback</option>
+                            <option value="ACCOUNT">Account Issues</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-semibold text-xs text-left">Please write your message here</label>
+                        <textarea rows="4" placeholder="Include as much detail as possible" class="rounded p-1 text-slate-800 font-semibold" x-model="contact.message"></textarea>
+                    </div>
+                    <button x-show="!login.showSuccess" class="bg-indigo-300 text-slate-800 font-semibold w-[105px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="signInBtnClicked">Submit</button>    
+                    <x-svg.spinner var="login.showSuccess" />
+                </div>
+            </x-slot>
+        </x-modal-wrapper>
 
         <x-modal-wrapper var="showAccountModal" title="My Account">
             <x-slot name="content">
@@ -88,8 +115,8 @@
         <script>
             const welcome = (e) => ({
                 showAccountModal: false,
+                showContactModal: false,
                 showCreateAccountModal: false,
-                toggle: true,
                 login: {
                     email: '',
                     password: '',
@@ -106,6 +133,11 @@
                     showSuccess: false,
                     errorMessage: '',
                     showRedirect: false
+                },
+                contact: {
+                    email: '',
+                    reason: 'FEEDBACK',
+                    message: ''
                 },
                 init() {
                     this.$watch('showAccountModal', (state) => {
