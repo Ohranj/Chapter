@@ -16,10 +16,21 @@
         {{ $main_wrapper }}
 
         <script>
-            const auth = () => ({
-                init() {
-                    console.log('Auth')
-                }
+            const auth = (e) => ({
+                async logout() {
+                    const response = await fetch(route('post.logout'), {
+                        method: 'post',
+                        body: null,
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                    return location.reload();
+                },
+                ...e
             })
         </script>
     </body>

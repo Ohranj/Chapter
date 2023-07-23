@@ -9,7 +9,7 @@
             <div x-cloak x-show="showSettings" class="absolute w-[175px] right-0 rounded shadow shadow-slate-500 mt-1" x-collapse @click.away="showSettings = false">
                 <ul class="p-1 text-right">
                     <li class="text-xs cursor-pointer rounded px-1 hover:text-amber-500 hover:underline underline-offset-2 decoration-2 mb-1">My Profile</li>
-                    <li class="text-xs cursor-pointer rounded px-1 hover:text-amber-500 hover:underline underline-offset-2 decoration-2">
+                    <li class="text-xs cursor-pointer rounded px-1 hover:text-amber-500 hover:underline underline-offset-2 decoration-2" @click="logout">
                         <x-svg.logout stroke="currentColor" class="mr-1 w-5 h-5 inline" />
                         Logout
                     </li>

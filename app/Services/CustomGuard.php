@@ -99,10 +99,8 @@ class CustomGuard implements StatefulGuard
      * @return void
      */
     public function logout() {
-        dd('logout');
         $this->session->forget($this->prefix . '_id');
         $this->session->forget($this->prefix . '_remember');
-        null;
     }
 
     /**
@@ -120,8 +118,7 @@ class CustomGuard implements StatefulGuard
      * @return bool
      */
     public function guest() {
-        dd('guest');
-        return false;
+        return boolval($this->id());
     }
 
     /**
@@ -159,8 +156,7 @@ class CustomGuard implements StatefulGuard
      * @return bool
      */
     public function hasUser() {
-        dd('has user');
-        return false;
+        return boolval($this->user());
     }
 
     /**
