@@ -5,11 +5,11 @@
             <div class="flex grow gap-8">
                 <x-navbarSide />
                 <div class="grow py-4">
-                    My Current book
+                    {{-- My Current book
                     My Timeline
                     Whats popular
                     Add a status
-                    View my friendn and their status / current book
+                    View my friendn and their status / current book --}}
                 </div>
             </div>
         </div>

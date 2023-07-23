@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'))->middleware('guest')->name('login');
 
-Route::get('/dashboard', fn () => view('dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('dashboard')->middleware('auth')->group(function() {
+    Route::get('/', fn () => view('dashboard'))->name('dashboard');
+    Route::get('/profile', fn () => view('profile'))->name('profile');
+});
 
 require __DIR__.'/auth.php';

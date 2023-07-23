@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Card Pilot - Welcome</title>
+        <title>Chapter - Welcome</title>
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -172,7 +172,6 @@
                         return;
                     }
                     await new Promise((res) => setTimeout(() => res(), 750))
-                    this.login.showSuccess = false;
                     location.reload()
                     
                 },
