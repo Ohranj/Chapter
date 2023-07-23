@@ -185,4 +185,12 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /**
+     * MASTER ACCOUNT DETAILS
+     */
+    'master_name' => env('MASTER_NAME'),
+    'master_surname' => env('MASTER_SURNAME'),
+    'master_email' => env('MASTER_EMAIL'),
+    'master_password' => env('MASTER_PASSWORD'),
+
 ];
