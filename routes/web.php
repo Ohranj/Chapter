@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{
+    UserController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,7 @@ Route::get('/', fn () => view('welcome'))->middleware('guest')->name('login');
 Route::prefix('dashboard')->middleware('auth')->group(function() {
     Route::get('/', fn () => view('dashboard'))->name('dashboard');
     Route::get('/profile', fn () => view('profile'))->name('profile');
+    Route::post('/profile/personal', [ UserController::class, 'update' ])->name('post.update_personal_info');
 });
 
 require __DIR__.'/auth.php';

@@ -15,6 +15,8 @@
     <body class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 h-full p-12 text-white" x-data="auth({ csrfToken: '{{ csrf_token() }}', user: {{ Auth::user()->toJson() }} })">
         {{ $main_wrapper }}
 
+        <x-toast />
+
         <script>
             const auth = (e) => ({
                 async logout() {

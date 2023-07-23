@@ -33,7 +33,7 @@
                                         <label class="font-semibold text-xs">Gender</label>
                                         <input class="rounded p-1 text-slate-800 font-semibold" />
                                     </div>
-                                    <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]">Confirm</button>
+                                    <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]" @click="confirmPersonalInfoBtnClicked">Confirm</button>
                                 </div>
                             </div>
                         </div>
@@ -91,6 +91,21 @@
             toggles: {
                 directMessaging: true,
                 replyComments: true,
+            },
+            async confirmPersonalInfoBtnClicked() {
+                const response = await fetch(route('post.update_personal_info'), {
+                    method: 'post',
+                    body: JSON.stringify({ email: this.user.email }),
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrfToken,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+                })
+                const json = await response.json();
+                response.status == 201 
+                    ? Alpine.store('toast').toggle(json.message) 
+                    : Alpine.store('toast').toggle(json.message, false)
             }
         })
     </script>
