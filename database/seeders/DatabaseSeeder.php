@@ -14,11 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             'name' => config('app.master_name'),
             'surname' => config('app.master_surname'),
             'email' => config('app.master_email'),
             'password' => Hash::make(config('app.master_password'))
         ]);
+
+        $user->profile()->create();
+        $user->privacy()->create();
     }
 }

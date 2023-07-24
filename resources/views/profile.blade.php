@@ -22,12 +22,12 @@
                             <div class="mt-6 flex flex-col gap-4">
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Country</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.country" />
+                                        <label class="font-semibold text-xs">Where are you from?</label>
+                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.profile.country" />
                                     </div>
                                     <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">Gender</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" />
+                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.profile.gender" />
                                     </div>
                                     <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]" @click="confirmPersonalInfoBtnClicked">Confirm</button>
                                 </div>
@@ -42,9 +42,9 @@
                                     <label class="cursor-pointer gap-2 flex items-center text-xs font-semibold">
                                         <span class="w-[275px]"> I am happy to receive direct messages</span>
                                             <div class="relative">
-                                                <input type="checkbox" :checked="toggles.directMessaging" @click="toggles.directMessaging = !toggles.directMessaging" class="sr-only">
-                                                <div class="block w-[45px] h-[21px] rounded-full" :class="toggles.directMessaging ? 'bg-amber-500' : 'bg-indigo-500'"></div>
-                                                <div class="absolute left-[4px] top-[3px] w-[14px] h-[14px] rounded-full transition duration-700" :class="toggles.directMessaging ? 'translate-x-[22px] bg-slate-800' : 'bg-slate-100'"></div>
+                                                <input type="checkbox" :checked="user.privacy.direct_messages" @click="user.privacy.direct_messages = !user.privacy.direct_messages" class="sr-only" @change="privacyToggled">
+                                                <div class="block w-[45px] h-[21px] rounded-full" :class="user.privacy.direct_messages ? 'bg-amber-500' : 'bg-indigo-500'"></div>
+                                                <div class="absolute left-[4px] top-[3px] w-[14px] h-[14px] rounded-full transition duration-700" :class="user.privacy.direct_messages ? 'translate-x-[22px] bg-slate-700' : 'bg-slate-100'"></div>
                                             </div>
                                         </label>
                                     </div>
@@ -52,9 +52,9 @@
                                         <label class="cursor-pointer gap-2 flex items-center text-xs font-semibold">
                                             <span class="w-[275px]">I am happy to receive replies to my comments</span>
                                             <div class="relative">
-                                                <input type="checkbox" :checked="toggles.replyComments" @click="toggles.replyComments = !toggles.replyComments" class="sr-only">
-                                                <div class="block w-[45px] h-[21px] rounded-full" :class="toggles.replyComments ? 'bg-amber-500' : 'bg-indigo-500'"></div>
-                                                <div class="absolute left-[4px] top-[3px] w-[14px] h-[14px] rounded-full transition duration-700" :class="toggles.replyComments ? 'translate-x-[22px] bg-slate-800' : 'bg-slate-100'"></div>
+                                                <input type="checkbox" :checked="user.privacy.comment_replies" @click="user.privacy.comment_replies = !user.privacy.comment_replies" class="sr-only" @change="privacyToggled">
+                                                <div class="block w-[45px] h-[21px] rounded-full" :class="user.privacy.comment_replies ? 'bg-amber-500' : 'bg-indigo-500'"></div>
+                                                <div class="absolute left-[4px] top-[3px] w-[14px] h-[14px] rounded-full transition duration-700" :class="user.privacy.comment_replies ? 'translate-x-[22px] bg-slate-700' : 'bg-slate-100'"></div>
                                             </div>
                                         </label>
                                     </div>
@@ -86,14 +86,25 @@
         </div>
         <script>
         const profile = () => ({
-            toggles: {
-                directMessaging: true,
-                replyComments: true,
-            },
             async confirmPersonalInfoBtnClicked() {
                 const response = await fetch(route('post.update_personal_info'), {
                     method: 'post',
-                    body: JSON.stringify({ fill: this.user.email }),
+                    body: JSON.stringify({ ...this.user.profile }),
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrfToken,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+                })
+                const json = await response.json();
+                response.status == 201 
+                    ? Alpine.store('toast').toggle(json.message) 
+                    : Alpine.store('toast').toggle(json.message, false)
+            },
+            async privacyToggled() {
+                const response = await fetch(route('post.update_privacy'), {
+                    method: 'post',
+                    body: JSON.stringify({ ...this.user.privacy }),
                     headers: {
                         'X-CSRF-TOKEN': this.csrfToken,
                         'Content-Type': 'application/json',

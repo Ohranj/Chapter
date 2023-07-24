@@ -11,9 +11,5 @@ use App\Actions\ActivityLog\CreateSingleLog;
 
 class UserController extends Controller
 {
-    public function update(Request $request, UpdateSingleUser $updateSingleUser, CreateSingleLog $createSingleLog) {
-        $updateSingleUser->run(Auth::user(), $request->only('country'));
-        $createSingleLog->run(Auth::user(), ActivityLog::ACTIVITY['Account Updated']);
-        return new JsonResponse([ 'success' => true, 'message' => 'Account Updated' ], 201);
-    }
+    //
 }

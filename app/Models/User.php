@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Privacy;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -63,6 +64,14 @@ class User extends Authenticatable
     /**
      * Relations
      */
+    public function profile() {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+    public function privacy() {
+        return $this->hasOne(Privacy::class, 'user_id', 'id');
+    }
+
     public function activity() {
         return $this->morphMany(ActivityLog::class, 'loggable');
     }
