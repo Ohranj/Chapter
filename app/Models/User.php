@@ -39,7 +39,7 @@ class User extends Authenticatable
     /**
      * Appended JSON properties
      */
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name', 'initials'];
 
     /**
      * Concat a users full name
@@ -48,6 +48,16 @@ class User extends Authenticatable
     {
         return new Attribute(
             get: fn () => $this->name . ' ' . $this->surname,
+        );
+    }
+
+    /**
+     * Concat a users initials
+     */
+    protected function initials(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->name[0] . $this->surname[0],
         );
     }
 

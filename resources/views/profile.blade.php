@@ -9,12 +9,15 @@
                     <small>Update your public facing profile and your preferences when interacting across the site.</small>
                     <div class="flex flex-col gap-4 mt-12">
                         <div class="flex gap-4 items-center border-b border-slate-500 pb-3">
-                            <img class="border border-white rounded-full w-[105px] h-[105px]" />
+                            <div class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest" :class="{ 'bg-gradient-to-tr from-amber-400 to-red-300': !editProfile }">
+                                <p class="text-4xl font-semibold" x-show="!user.profile.avatar && !editProfile" x-text="user.initials"></p>
+                                <img x-cloak x-show="user.profile.avatar" />
+                            </div>
                             <div class="flex flex-col gap-1">
                                 <p class="text-amber-500" x-text="user.full_name"></p>
                                 <small class="italic">Just watching the world go by.</small>
                             </div>
-                            <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]">Edit</button>
+                            <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px] self-end" @click="editProfile = true">Edit</button>
                         </div>
                         <div class="border-b border-slate-500 pb-3">
                             <h1 class="text-base text-amber-500">Personal Information</h1>
@@ -81,11 +84,14 @@
                         </div>
                     </div>
                    
+                    
+
                 </div>
             </div>
         </div>
         <script>
         const profile = () => ({
+            editProfile: false,
             async confirmPersonalInfoBtnClicked() {
                 const response = await fetch(route('post.update_personal_info'), {
                     method: 'post',
