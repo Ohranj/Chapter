@@ -22,12 +22,8 @@
                             <div class="mt-6 flex flex-col gap-4">
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Email Address</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.email" />
-                                    </div>
-                                    <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">Country</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" />
+                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.country" />
                                     </div>
                                     <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">Gender</label>
@@ -38,13 +34,13 @@
                             </div>
                         </div>
                         <div class="border-b border-slate-500 pb-3">
-                            <h1 class="text-base text-amber-500">Privacy</h1>
-                            <small>Please check the boxes accordingly.</small>
+                            <h1 class="text-base text-amber-500">Privacy & Security</h1>
+                            <small>Handle how others can interact with yourself. Additionally, secure your account to keep your information safe.</small>
                             <div class="mt-6 flex flex-col gap-4">
                                 <div class="flex flex-col gap-2">
                                     <div class="flex gap-2 items-center">
                                     <label class="cursor-pointer gap-2 flex items-center text-xs font-semibold">
-                                        <span class="w-[275px]"> I am happy for receive direct messages</span>
+                                        <span class="w-[275px]"> I am happy to receive direct messages</span>
                                             <div class="relative">
                                                 <input type="checkbox" :checked="toggles.directMessaging" @click="toggles.directMessaging = !toggles.directMessaging" class="sr-only">
                                                 <div class="block w-[45px] h-[21px] rounded-full" :class="toggles.directMessaging ? 'bg-amber-500' : 'bg-indigo-500'"></div>
@@ -62,11 +58,13 @@
                                             </div>
                                         </label>
                                     </div>
+                                    <small class="font-semibold hover:underline underline-offset-2 cursor-pointer">Click here to change your password</small>
+                                    <small class="font-semibold hover:underline underline-offset-2 cursor-pointer">Click here to download your data</small>
                                 </div>
                             </div>
                         </div>
                         <div class="border-b border-slate-500 pb-3">
-                            <h1 class="text-base text-amber-500">Security</h1>
+                            <h1 class="text-base text-amber-500">Account Management</h1>
                             <small class="text-red-500 font-semibold">Please be careful. The changes here cannot be reversed.</small>
                             <div class="mt-6 flex flex-col gap-4">
                                 <div class="flex flex-col gap-2">
@@ -95,7 +93,7 @@
             async confirmPersonalInfoBtnClicked() {
                 const response = await fetch(route('post.update_personal_info'), {
                     method: 'post',
-                    body: JSON.stringify({ email: this.user.email }),
+                    body: JSON.stringify({ fill: this.user.email }),
                     headers: {
                         'X-CSRF-TOKEN': this.csrfToken,
                         'Content-Type': 'application/json',
