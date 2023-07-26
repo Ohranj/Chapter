@@ -25,7 +25,9 @@ class UpdateProfileRequest extends FormRequest
             'upload' => ['nullable'],
             'country' => ['nullable', 'string'],
             'gender' => ['nullable', 'string'],
-            'slogan' => ['nullable', 'string', 'max:150']
+            'slogan' => ['nullable', 'string', 'max:150'],
+            'name' => ['nullable', 'string'],
+            'surname' => ['nullable', 'string']
         ];
     }
 }

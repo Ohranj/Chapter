@@ -23,8 +23,12 @@
                                 <img x-cloak x-show="user.profile.avatar" class="object-cover rounded-full w-full h-full" :src="'/storage/' + user.profile.avatar" />
                             </div>
                             <div class="flex flex-col gap-1">
-                                <p class="text-amber-500" x-text="user.full_name"></p>
-                                <input :class="editProfile.show ? 'border' : ''" class="italic text-xs tracking-wider min-w-[300px] bg-transparent rounded" x-model="user.profile.slogan" />
+                                <div x-cloak x-show="editProfile.show" class="flex gap-1">
+                                    <input class="pl-1 border bg-transparent text-amber-500 w-[105px] rounded" x-model="user.name" placeholder="Forename" />
+                                    <input class="pl-1 border bg-transparent text-amber-500 w-[145px] rounded" x-model="user.surname" placeholder="Surname" />
+                                </div>
+                                <p x-show="!editProfile.show" class="text-amber-500" x-text="user.name + ' ' + user.surname"></p>
+                                <input :class="editProfile.show ? 'border pl-1' : ''" class="italic text-xs tracking-wider min-w-[300px] bg-transparent rounded" x-model="user.profile.slogan" placeholder="Slogan" />
                             </div>
                             <div class="ml-auto self-end">
                                 <button class="text-slate-800 font-semibold text-xs py-1 rounded w-[105px]" @click="editProfile.show = !editProfile.show; $refs.uploadAvatarInput.value = null; editProfile.upload = null" :class="editProfile.show ? 'bg-amber-300 hover:bg-amber-400' : 'bg-indigo-300 hover:bg-indigo-400'" x-text="editProfile.show ? 'Cancel' : 'Edit'"></button>
@@ -138,6 +142,8 @@
                 async confirmEditProfileBtnClicked() {
                     const form = new FormData;
                     form.append('slogan', this.user.profile.slogan);
+                    form.append('name', this.user.name);
+                    form.append('surname', this.user.surname);
                     if (this.editProfile.upload) {
                         form.append('upload', this.editProfile.upload);
                     }
