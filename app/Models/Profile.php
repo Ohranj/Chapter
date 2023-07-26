@@ -12,6 +12,7 @@ class Profile extends Model
     protected $fillable = [
         'country',
         'gender',
-        'slogan'
+        'slogan',
+        'avatar'
     ];
 }

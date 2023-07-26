@@ -5,19 +5,32 @@
             <div class="flex grow gap-8">
                 <x-navbarSide />
                 <div class="grow py-4" x-data="profile">
+                    <input type="file" class="opacity-0 h-0 w-0 absolute" x-ref="uploadAvatarInput" accept="image/*" @change="editProfile.upload = $el.files[0]" />
                     <h1 class="text-xl text-amber-500">My Profile</h1>
                     <small>Update your public facing profile and your preferences when interacting across the site.</small>
                     <div class="flex flex-col gap-4 mt-12">
                         <div class="flex gap-4 items-center border-b border-slate-500 pb-3">
-                            <div class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest" :class="{ 'bg-gradient-to-tr from-amber-400 to-red-300': !editProfile }">
-                                <p class="text-4xl font-semibold" x-show="!user.profile.avatar && !editProfile" x-text="user.initials"></p>
-                                <img x-cloak x-show="user.profile.avatar" />
+                            <div x-cloak x-show="editProfile.show" class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest flex-col border border-dashed border-amber-400 cursor-pointer hover:shadow-none" @click="$refs.uploadAvatarInput.click()">
+                                <x-svg.image x-show="!editProfile.upload" stroke="white" class="w-6 h-6" fill="none" />
+                                <small x-show="!editProfile.upload" class="text-white font-semibold">Upload</small>   
+                                <template x-if="editProfile.upload">
+                                    <image x-cloak x-show="editProfile.upload" class="w-full h-full rounded-full object-cover" :src="URL.createObjectURL(editProfile.upload)" />  
+                                </template>
+                                  
+                            </div>
+                            <div x-cloak x-show="!editProfile.show" class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest flex-col bg-gradient-to-tr from-amber-400 to-red-300">
+                                <p class="text-4xl font-semibold" x-show="!user.profile.avatar" x-text="user.initials"></p>
+                                <img x-cloak x-show="user.profile.avatar" class="object-cover rounded-full w-full h-full" :src="'/storage/' + user.profile.avatar" />
                             </div>
                             <div class="flex flex-col gap-1">
                                 <p class="text-amber-500" x-text="user.full_name"></p>
-                                <small class="italic">Just watching the world go by.</small>
+                                <input :class="editProfile.show ? 'border' : ''" class="italic text-xs tracking-wider min-w-[300px] bg-transparent rounded" x-model="user.profile.slogan" />
                             </div>
-                            <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px] self-end" @click="editProfile = true">Edit</button>
+                            <div class="ml-auto self-end">
+                                <button class="text-slate-800 font-semibold text-xs py-1 rounded w-[105px]" @click="editProfile.show = !editProfile.show; $refs.uploadAvatarInput.value = null; editProfile.upload = null" :class="editProfile.show ? 'bg-amber-300 hover:bg-amber-400' : 'bg-indigo-300 hover:bg-indigo-400'" x-text="editProfile.show ? 'Cancel' : 'Edit'"></button>
+                                <button x-cloak x-show="editProfile.show" x-transition.duration.750ms class="ml-auto text-slate-800 font-semibold text-xs py-1 rounded w-[105px] self-end bg-indigo-300 hover:bg-indigo-400" @click="confirmEditProfileBtnClicked">Confirm</button>
+                            </div>
+                            
                         </div>
                         <div class="border-b border-slate-500 pb-3">
                             <h1 class="text-base text-amber-500">Personal Information</h1>
@@ -83,47 +96,67 @@
                             </div>
                         </div>
                     </div>
-                   
-                    
-
                 </div>
             </div>
         </div>
         <script>
-        const profile = () => ({
-            editProfile: false,
-            async confirmPersonalInfoBtnClicked() {
-                const response = await fetch(route('post.update_personal_info'), {
-                    method: 'post',
-                    body: JSON.stringify({ ...this.user.profile }),
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
+            const profile = () => ({
+                editProfile: {
+                    show: false,
+                    upload: null
+                },
+                async confirmPersonalInfoBtnClicked() {
+                    const response = await fetch(route('post.update_personal_info'), {
+                        method: 'post',
+                        body: JSON.stringify({ ...this.user.profile }),
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                    response.status == 201 
+                        ? Alpine.store('toast').toggle(json.message) 
+                        : Alpine.store('toast').toggle(json.message, false)
+                },
+                async privacyToggled() {
+                    const response = await fetch(route('post.update_privacy'), {
+                        method: 'post',
+                        body: JSON.stringify({ ...this.user.privacy }),
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                    response.status == 201 
+                        ? Alpine.store('toast').toggle(json.message) 
+                        : Alpine.store('toast').toggle(json.message, false)
+                },
+                async confirmEditProfileBtnClicked() {
+                    const form = new FormData;
+                    form.append('slogan', this.user.profile.slogan);
+                    if (this.editProfile.upload) {
+                        form.append('upload', this.editProfile.upload);
                     }
-                })
-                const json = await response.json();
-                response.status == 201 
-                    ? Alpine.store('toast').toggle(json.message) 
-                    : Alpine.store('toast').toggle(json.message, false)
-            },
-            async privacyToggled() {
-                const response = await fetch(route('post.update_privacy'), {
-                    method: 'post',
-                    body: JSON.stringify({ ...this.user.privacy }),
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    }
-                })
-                const json = await response.json();
-                response.status == 201 
-                    ? Alpine.store('toast').toggle(json.message) 
-                    : Alpine.store('toast').toggle(json.message, false)
-            }
-        })
-    </script>
+                    const response = await fetch(route('post.update_personal_info'), {
+                        method: 'post',
+                        body: form,
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                    this.editProfile.show = false;
+                    this.user = json.data.user;
+                    response.status == 201 
+                        ? Alpine.store('toast').toggle(json.message) 
+                        : Alpine.store('toast').toggle(json.message, false)
+                }
+            })
+        </script>
     </x-slot>
-    
 </x-layouts.auth>

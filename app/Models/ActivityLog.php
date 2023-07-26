@@ -10,7 +10,8 @@ class ActivityLog extends Model
 
     CONST ACTIVITY = [
         'Registered' => 'REGISTERED',
-        'Profile Updated' => 'PROFILE_UPDATED'
+        'Profile Updated' => 'PROFILE_UPDATED',
+        'Privacy Updated' => 'PRIVACY_UPDATED'
     ];
 
 

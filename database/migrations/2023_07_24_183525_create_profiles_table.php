@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->string('country', 50)->default('Earth');
             $table->string('gender', 50)->default('A secret');
-            $table->string('slogan')->nullable();
+            $table->string('slogan')->nullable()->default('Watching the world go by');
             $table->string('avatar')->nullable();
             $table->timestamps();
         });
