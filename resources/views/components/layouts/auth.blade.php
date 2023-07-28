@@ -12,7 +12,7 @@
         @routes
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 h-full p-12 text-white" x-data="auth({ csrfToken: '{{ csrf_token() }}', user: {{ Auth::user() }} })">
+    <body class="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 h-full p-8 lg:p-12 text-white" x-data="auth({ csrfToken: '{{ csrf_token() }}', user: {{ Auth::user() }} })">
         {{ $main_wrapper }}
 
         <x-toast />

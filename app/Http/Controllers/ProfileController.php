@@ -21,16 +21,17 @@ class ProfileController extends Controller
         UpdateSingleUser $updateSingleUser
     ) {
         $user = Auth::user();
+        
         $updateSingleUser->run($user, $request->safe()->only('name', 'surname'));
-        $profileParams = $request->safe()->only('country', 'gender', 'slogan');
 
+        $profileParams = $request->safe()->only('country', 'gender', 'slogan');
         if (isset($request->upload)) {
             $path = $storeNewAvatar->run($request->upload);
             $profileParams = array_merge([ 'avatar' => $path ], $profileParams);
         }
-       
         $updateSingleUsersProfile->run($user, $profileParams);
         $createSingleLog->run($user, ActivityLog::ACTIVITY['Profile Updated']);
+
         return new JsonResponse([ 
             'success' => true, 
             'message' => 'Account Updated', 

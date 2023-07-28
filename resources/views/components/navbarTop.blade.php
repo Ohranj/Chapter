@@ -1,6 +1,6 @@
 <div x-data="{showSettings: false, showMobile: false}">
     <div class="font-semibold flex gap-8 items-start 2xl:items-end">
-        <p class="text-2xl tracking-wider font-extrabold align-middle"><x-svg.book stroke="orange" class="w-10 h-10 inline-block align-middle" fill="none" />Chapter</p>
+        <p class="text-2xl tracking-wider font-extrabold align-middle"><x-svg.book stroke="orange" class="w-10 h-10 inline-block align-middle" fill="none" />24Nabu</p>
         <div class="hidden 2xl:block ml-auto relative">
             <small :class="showSettings ? 'text-amber-500' : ''" class="hover:underline decoration-2 underline-offset-4 cursor-pointer hover:text-amber-500" @click="showSettings = !showSettings">
                 <x-svg.avatar class="w-9 h-9 rounded-full inline align-middle" stroke="white" />

@@ -2,33 +2,32 @@
     <x-slot name="main_wrapper">
         <div class="flex flex-col h-full gap-2">
             <x-navbarTop></x-navbarTop>
-            <div class="flex grow gap-8">
+            <div class="flex grow">
                 <x-navbarSide />
                 <div class="grow py-4" x-data="profile">
                     <input type="file" class="opacity-0 h-0 w-0 absolute" x-ref="uploadAvatarInput" accept="image/*" @change="editProfile.upload = $el.files[0]" />
-                    <h1 class="text-xl text-amber-500">My Profile</h1>
+                    <h1 class="text-xl text-amber-500 font-semibold">My Profile</h1>
                     <small>Update your public facing profile and your preferences when interacting across the site.</small>
                     <div class="flex flex-col gap-4 mt-12">
-                        <div class="flex gap-4 items-center border-b border-slate-500 pb-3">
+                        <div class="flex gap-4 items-center border-b border-slate-500 pb-3 flex-wrap">
                             <div x-cloak x-show="editProfile.show" class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest flex-col border border-dashed border-amber-400 cursor-pointer hover:shadow-none" @click="$refs.uploadAvatarInput.click()">
                                 <x-svg.image x-show="!editProfile.upload" stroke="white" class="w-6 h-6" fill="none" />
                                 <small x-show="!editProfile.upload" class="text-white font-semibold">Upload</small>   
                                 <template x-if="editProfile.upload">
                                     <image x-cloak x-show="editProfile.upload" class="w-full h-full rounded-full object-cover" :src="URL.createObjectURL(editProfile.upload)" />  
                                 </template>
-                                  
                             </div>
                             <div x-cloak x-show="!editProfile.show" class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest flex-col bg-gradient-to-tr from-amber-400 to-red-300">
-                                <p class="text-4xl font-semibold" x-show="!user.profile.avatar" x-text="user.initials"></p>
-                                <img x-cloak x-show="user.profile.avatar" class="object-cover rounded-full w-full h-full" :src="'/storage/' + user.profile.avatar" />
+                                <p class="text-4xl font-semibold" x-show="!user.profile.has_avatar" x-text="user.initials"></p>
+                                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-full h-full" :src="'/storage/' + user.profile.avatar" />
                             </div>
-                            <div class="flex flex-col gap-1">
+                            <div class="flex flex-col" :class="editProfile.show ? 'gap-2' : 'gap-1'">
                                 <div x-cloak x-show="editProfile.show" class="flex gap-1">
-                                    <input class="pl-1 border bg-transparent text-amber-500 w-[105px] rounded" x-model="user.name" placeholder="Forename" />
-                                    <input class="pl-1 border bg-transparent text-amber-500 w-[145px] rounded" x-model="user.surname" placeholder="Surname" />
+                                    <input class="pl-1 border-b bg-transparent text-amber-500 w-[105px]" x-model="user.name" placeholder="Forename" />
+                                    <input class="pl-1 border-b bg-transparent text-amber-500 w-[145px]" x-model="user.surname" placeholder="Surname" />
                                 </div>
                                 <p x-show="!editProfile.show" class="text-amber-500" x-text="user.name + ' ' + user.surname"></p>
-                                <input :class="editProfile.show ? 'border pl-1' : ''" class="italic text-xs tracking-wider min-w-[300px] bg-transparent rounded" x-model="user.profile.slogan" placeholder="Slogan" />
+                                <input :class="editProfile.show ? 'border-b pl-1' : ''" class="italic text-xs tracking-wider min-w-[300px] bg-transparent" x-model="user.profile.slogan" placeholder="Slogan" />
                             </div>
                             <div class="ml-auto self-end">
                                 <button class="text-slate-800 font-semibold text-xs py-1 rounded w-[105px]" @click="editProfile.show = !editProfile.show; $refs.uploadAvatarInput.value = null; editProfile.upload = null" :class="editProfile.show ? 'bg-amber-300 hover:bg-amber-400' : 'bg-indigo-300 hover:bg-indigo-400'" x-text="editProfile.show ? 'Cancel' : 'Edit'"></button>
