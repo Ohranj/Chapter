@@ -22,12 +22,12 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'upload' => ['nullable'],
+            'upload' => ['nullable', 'file'],
             'country' => ['nullable', 'string'],
             'gender' => ['nullable', 'string'],
-            'slogan' => ['nullable', 'string', 'max:150'],
-            'name' => ['nullable', 'string'],
-            'surname' => ['nullable', 'string']
+            'slogan' => ['required', 'string', 'max:150'],
+            'name' => ['sometimes', 'required', 'string'],
+            'surname' => ['sometimes', 'required', 'string']
         ];
     }
 }

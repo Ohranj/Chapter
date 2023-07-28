@@ -77,7 +77,7 @@
                                             </div>
                                         </label>
                                     </div>
-                                    <small class="font-semibold hover:underline underline-offset-2 cursor-pointer">Click here to change your password</small>
+                                    <small class="font-semibold hover:underline underline-offset-2 cursor-pointer" @click="password.show = true">Click here to change your password</small>
                                     <small class="font-semibold hover:underline underline-offset-2 cursor-pointer">Click here to download your data</small>
                                 </div>
                             </div>
@@ -99,6 +99,28 @@
                             </div>
                         </div>
                     </div>
+
+                    <x-modal-wrapper var="password.show" title="Change My Password">
+                        <x-slot name="content">
+                            <div class="p-6 text-center text-white flex flex-col gap-2 sm:w-2/3 mx-auto">
+                                <h2 class="text-lg font-semibold mb-4">Change your Password below</h2>
+                                <p>Please enter your current password alongside your new desired password.</p>
+                                <div class="flex flex-col">
+                                    <label class="font-semibold text-xs text-left">Current Password</label>
+                                    <input type="password" placeholder="Enter your current password" class="rounded p-1 text-slate-800 font-semibold" required x-model="password.current" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="font-semibold text-xs text-left">New Password</label>
+                                    <input type="password" placeholder="Enter your new password" class="rounded p-1 text-slate-800 font-semibold" required x-model="password.password" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="font-semibold text-xs text-left">Confirm Your New Password</label>
+                                    <input type="password" placeholder="Confirm your new password" class="rounded p-1 text-slate-800 font-semibold" required x-model="password.password_confirmation" />
+                                </div>
+                                <button class="bg-indigo-300 text-slate-800 font-semibold w-[125px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="changePasswordBtnClicked">Change Password</button>    
+                            </div>
+                        </x-slot>
+                    </x-modal-wrapper>
                 </div>
             </div>
         </div>
@@ -108,8 +130,22 @@
                     show: false,
                     upload: null
                 },
+                password: {
+                    show: false,
+                    current: '',
+                    password: '',
+                    password_confirmation: ''
+                },
+                init() {
+                    this.$watch('password.show', (state) => {
+                        if (state) return;
+                        this.password.current = '';
+                        this.password.password = '';
+                        this.password_confirmation = '';
+                    })
+                },
                 async confirmPersonalInfoBtnClicked() {
-                    const response = await fetch(route('post.update_personal_info'), {
+                    const response = await fetch(route('post.update_personal_info', { user: this.user }), {
                         method: 'post',
                         body: JSON.stringify({ ...this.user.profile }),
                         headers: {
@@ -124,7 +160,7 @@
                         : Alpine.store('toast').toggle(json.message, false)
                 },
                 async privacyToggled() {
-                    const response = await fetch(route('post.update_privacy'), {
+                    const response = await fetch(route('post.update_privacy', { user: this.user }), {
                         method: 'post',
                         body: JSON.stringify({ ...this.user.privacy }),
                         headers: {
@@ -146,7 +182,7 @@
                     if (this.editProfile.upload) {
                         form.append('upload', this.editProfile.upload);
                     }
-                    const response = await fetch(route('post.update_personal_info'), {
+                    const response = await fetch(route('post.update_personal_info', { user: this.user }), {
                         method: 'post',
                         body: form,
                         headers: {
@@ -155,11 +191,36 @@
                         }
                     })
                     const json = await response.json();
+                    if (response.status != 201) {
+                        Alpine.store('toast').toggle(json.message, false)
+                        return
+                    }
                     this.editProfile.show = false;
                     this.user = json.data.user;
-                    response.status == 201 
-                        ? Alpine.store('toast').toggle(json.message) 
-                        : Alpine.store('toast').toggle(json.message, false)
+                    Alpine.store('toast').toggle(json.message) 
+                },
+                async changePasswordBtnClicked() {
+                    const response = await fetch(route('post.update_user', { user: this.user }), {
+                        method: 'post',
+                        body: JSON.stringify({
+                            current: this.password.current,
+                            password: this.password.password,
+                            password_confirmation: this.password.password_confirmation
+                        }),
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                    })
+                    const json = await response.json();
+                   
+                    if (response.status != 201) {
+                        Alpine.store('toast').toggle(json.message, false); 
+                        return;
+                    }
+                    this.password.show = false;
+                    Alpine.store('toast').toggle(json.message);
                 }
             })
         </script>

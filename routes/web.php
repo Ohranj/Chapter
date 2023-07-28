@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PrivacyController,
-    ProfileController
+    ProfileController,
+    UserController
 };
 
 /*
@@ -22,10 +23,11 @@ Route::get('/', fn () => view('welcome'))->middleware('guest')->name('login');
 Route::prefix('dashboard')->middleware('auth')->group(function() {
     Route::get('/', fn () => view('dashboard'))->name('dashboard');
    
-    Route::prefix('profile')->group(function() {
-        Route::get('/', fn () => view('profile'))->name('profile');
-        Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
-        Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
+    Route::prefix('profile/{user}')->group(function() {
+        Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
+        Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info')->middleware('can:update,user');
+        Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy')->middleware('can:update,user');
+        Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user')->middleware('can:update,user');
     });
 });
 
