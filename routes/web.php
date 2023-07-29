@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PrivacyController,
     ProfileController,
+    TimelineController,
     UserController
 };
 
@@ -22,6 +23,12 @@ use App\Http\Controllers\{
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::get('/', fn() => view('dashboard'))->name('dashboard');
+
+    Route::group(['prefix' => 'timeline'], function() {
+        Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
+        Route::post('/create', [ TimelineController::class, 'create' ])->name('post.timeline_entry');
+    });
+   
    
     Route::group(['prefix' => 'profile/{user}'], function() {
         Route::get('/', [ ProfileController::class, 'index' ])->name('profile');

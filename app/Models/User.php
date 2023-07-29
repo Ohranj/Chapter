@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Privacy;
+use App\Models\Timeline;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -77,6 +77,10 @@ class User extends Authenticatable
      */
     public function profile() {
         return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+    public function entries() {
+        return $this->hasMany(Timeline::class, 'user_id', 'id');
     }
 
     public function privacy() {

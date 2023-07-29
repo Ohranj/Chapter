@@ -1,6 +1,6 @@
 <x-layouts.auth>
     <x-slot name="main_wrapper">
-        <div class="flex flex-col h-full gap-2">
+        <div class="flex flex-col h-full gap-8">
             <x-navbarTop></x-navbarTop>
             <div class="flex grow gap-8">
                 <x-navbarSide />
