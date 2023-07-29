@@ -3,7 +3,7 @@
         <li class="hover:text-amber-500 rounded cursor-pointer p-1 {{ Route::currentRouteName() == 'dashboard' ? 'text-amber-500' : '' }}">
             <a href="{{ route('dashboard') }}" class="text-inherit">
                 <x-svg.home stroke="currentColor" class="w-7 h-7 inline mr-2 align-bottom" fill="none" />
-                Dashboard
+                Home
             </a>
         </li>
         <li class="hover:text-amber-500 rounded cursor-pointer p-1 {{ Route::currentRouteName() == 'explore_books' ? 'text-amber-500' : '' }}">
@@ -15,7 +15,7 @@
         <li class="hover:text-amber-500 rounded cursor-pointer p-1 {{ Route::currentRouteName() == 'explore_community' ? 'text-amber-500' : '' }}">
             <a href="{{ route('explore_community') }}" class="text-inherit">
                 <x-svg.earth stroke="currentColor" class="w-7 h-7 inline mr-2 align-bottom" fill="none" />
-                Explore community
+                Explore Community
             </a>
         </li>
         <li class="hover:text-amber-500 rounded cursor-pointer p-1 mt-4 {{ Route::currentRouteName() == 'my_books' ? 'text-amber-500' : '' }}">
