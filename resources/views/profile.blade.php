@@ -1,8 +1,8 @@
 <x-layouts.auth>
     <x-slot name="main_wrapper">
-        <div class="flex flex-col h-full gap-2">
+        <div class="flex flex-col h-full gap-8">
             <x-navbarTop></x-navbarTop>
-            <div class="flex grow">
+            <div class="flex grow sm:w-5/6 mx-auto">
                 <x-navbarSide />
                 <div class="grow py-4" x-data="profile">
                     <input type="file" class="opacity-0 h-0 w-0 absolute" x-ref="uploadAvatarInput" accept="image/*" @change="editProfile.upload = $el.files[0]" />
