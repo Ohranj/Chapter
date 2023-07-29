@@ -117,7 +117,8 @@
                                     <label class="font-semibold text-xs text-left">Confirm Your New Password</label>
                                     <input type="password" placeholder="Confirm your new password" class="rounded p-1 text-slate-800 font-semibold" required x-model="password.password_confirmation" />
                                 </div>
-                                <button class="bg-indigo-300 text-slate-800 font-semibold w-[125px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="changePasswordBtnClicked">Change Password</button>    
+                                <button class="bg-indigo-300 text-slate-800 font-semibold w-[125px] rounded text-xs py-1 mx-auto hover:bg-indigo-400" @click="changePasswordBtnClicked">Change Password</button>   
+                                <small class="mt-6">If you are having trouble remembering your current password, please <q class="underline text-amber-500 underline-offset-2 decoration-2 font-semibold cursor-pointer">click here</q> to request a new one</small> 
                             </div>
                         </x-slot>
                     </x-modal-wrapper>
@@ -140,8 +141,8 @@
                     this.$watch('password.show', (state) => {
                         if (state) return;
                         this.password.current = '';
+                        this.password.password_confirmation = ''
                         this.password.password = '';
-                        this.password_confirmation = '';
                     })
                 },
                 async confirmPersonalInfoBtnClicked() {
@@ -214,7 +215,6 @@
                         }
                     })
                     const json = await response.json();
-                   
                     if (response.status != 201) {
                         Alpine.store('toast').toggle(json.message, false); 
                         return;

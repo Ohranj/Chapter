@@ -25,9 +25,12 @@ Route::prefix('dashboard')->middleware('auth')->group(function() {
    
     Route::prefix('profile/{user}')->group(function() {
         Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
-        Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info')->middleware('can:update,user');
-        Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy')->middleware('can:update,user');
-        Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user')->middleware('can:update,user');
+        Route::group(['middleware' => 'can:update,user'], function() {
+            Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
+            Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
+            Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user');
+        });
+       
     });
 });
 
