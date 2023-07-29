@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\{
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+    Route::get('/', fn () => view('welcome'))->name('login');
     Route::post('register', RegisteredUserController::class)->name('post.create_account');
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('post.login');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');

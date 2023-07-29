@@ -18,19 +18,22 @@ use App\Http\Controllers\{
 |
 */
 
-Route::get('/', fn () => view('welcome'))->middleware('guest')->name('login');
 
-Route::prefix('dashboard')->middleware('auth')->group(function() {
-    Route::get('/', fn () => view('dashboard'))->name('dashboard');
+
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
+    Route::get('/', fn() => view('dashboard'))->name('dashboard');
    
-    Route::prefix('profile/{user}')->group(function() {
+    Route::group(['prefix' => 'profile/{user}'], function() {
         Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
         Route::group(['middleware' => 'can:update,user'], function() {
             Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
             Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
             Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user');
         });
-       
+    });
+
+    Route::group(['prefix' => '{user}/books'], function() {
+        Route::get('/', fn() => view('my-books'))->name('my_books');  
     });
 });
 
