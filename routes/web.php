@@ -46,6 +46,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
     Route::group(['prefix' => 'community'], function() {
         Route::get('/', fn() => view('explore-community'))->name('explore_community');  
+        Route::get('/nabus', [ UserController::class, 'list' ])->name('list_nabus');
     });
     
     Route::group(['prefix' => 'books'], function() {
