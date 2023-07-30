@@ -18,20 +18,23 @@
                                         <template x-if="nabu.profile.has_avatar">
                                             <img class="object-cover rounded-full w-9 h-9 inline shadow-sm shadow-amber-200" :src="'/storage/avatars/' + nabu.profile.avatar" />
                                         </template>                     
-                                        <div class="flex flex-col justify-around gap-2 grow">
+                                        <div class="flex flex-col gap-2 grow">
                                             <div class="flex flex-col">
                                                 <small class="font-semibold text-amber-500" x-text="nabu.full_name"></small>
-                                                <small x-text="nabu.profile.slogan"></small>
+                                                <small class="italic" x-text="nabu.profile.slogan"></small>
                                             </div>
                                             <small>
-                                                <x-svg.book stroke="currentColor" class="w-4 h-4 inline" fill="none" />
-                                                <span x-text="nabu.profile.current_read"></span>
+                                                <x-svg.book stroke="currentColor" class="w-5 h-5 inline align-bottom" fill="none" />
+                                                <span class="font-semibold" x-text="nabu.profile.current_read"></span>
                                             </small>
                                         </div>
-                                        <div class="text-xs self-end">
-                                            <template x-for="tag in nabu.tags">
-                                                <button class="border border-slate-500 rounded px-1" x-text="tag.tag"></button>
-                                            </template>
+                                        <div class="text-xs self-end flex flex-col items-end">
+                                            <small class="font-semibold" x-text="nabu.profile.country"></small>
+                                            <div class="flex gap-1">
+                                                <template x-for="tag in nabu.tags">
+                                                    <button class="border border-slate-500 rounded px-1" x-text="tag.tag"></button>
+                                                </template>
+                                            </div>
                                         </div>
                                         <x-svg.star stroke="#f59e0b" class="w-5 h-5 absolute top-2 right-2" fill="#f59e0b" />
                                     </div>
