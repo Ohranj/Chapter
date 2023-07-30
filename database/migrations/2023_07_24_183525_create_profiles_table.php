@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->string('country', 50)->default('Earth');
+            $table->string('country', 50)->default('United Kingdom');
             $table->string('current_read', 75)->default('Help me decide');
             $table->string('slogan')->nullable()->default('Watching the world go by');
             $table->string('avatar')->nullable();

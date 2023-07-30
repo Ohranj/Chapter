@@ -38,6 +38,11 @@ class User extends Authenticatable
     ];
 
     /**
+     * Model constants
+     */
+    const USER_TYPES = ['USER', 'SYSTEM'];
+
+    /**
      * Appended JSON properties
      */
     protected $appends = ['full_name', 'initials'];

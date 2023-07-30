@@ -169,4 +169,11 @@ class CustomGuard implements StatefulGuard
         dd('set user');
         null;
     }
+
+    /**
+     * Check if a user or system level
+     */
+    public function isUser() {
+        return $this->user()->level == User::USER_TYPES[0];
+    }
 }

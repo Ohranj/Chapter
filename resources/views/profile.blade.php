@@ -40,10 +40,14 @@
                             <h1 class="text-base text-amber-500">Personal Information</h1>
                             <small>Please be aware that the information you share here is publicly accessible. As such, only share information you are happy with others knowing.</small>
                             <div class="mt-6 flex flex-col gap-4">
-                                <div class="flex flex-col gap-2">
+                                <div class="flex flex-col gap-3">
                                     <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">What is the title of the book you are currently reading?</label>
                                         <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline-none" x-model="user.profile.current_read" />
+                                    </div>
+                                    <div class="flex flex-col items-start">
+                                        <label class="font-semibold text-xs">Please select the genres that interest you most (max: 5)</label>
+                                        <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" />
                                     </div>
                                     <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">Where are you from?</label>
