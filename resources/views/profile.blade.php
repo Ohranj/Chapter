@@ -17,9 +17,10 @@
                                     <image x-cloak x-show="editProfile.upload" class="w-full h-full rounded-full object-cover" :src="URL.createObjectURL(editProfile.upload)" />  
                                 </template>
                             </div>
-                            <div x-cloak x-show="!editProfile.show" class="shadow shadow-amber-400 rounded-full w-[105px] h-[105px] flex items-center justify-center text-slate-700 tracking-widest flex-col bg-gradient-to-tr from-amber-400 to-red-300">
-                                <p class="text-4xl font-semibold" x-show="!user.profile.has_avatar" x-text="user.initials"></p>
-                                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-full h-full" :src="'/storage/' + user.profile.avatar" />
+                            <div x-cloak x-show="!editProfile.show" class="w-[105px] h-[105px]">
+                                <small x-show="!user.profile.has_avatar" class="text-4xl font-semibold w-[105px] h-[105px] rounded-full flex flex-col justify-center shadow shadow-amber-400 rounded-full bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700 tracking-wide" x-text="user.initials"></small> 
+                                
+                                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-full h-full shadow shadow-amber-400" :src="'/storage/avatars/' + user.profile.avatar" />
                             </div>
                             <div class="flex flex-col" :class="editProfile.show ? 'gap-2' : 'gap-1'">
                                 <div x-cloak x-show="editProfile.show" class="flex gap-1">
@@ -41,12 +42,12 @@
                             <div class="mt-6 flex flex-col gap-4">
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Where are you from?</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.profile.country" />
+                                        <label class="font-semibold text-xs">What is the title of the book you are currently reading?</label>
+                                        <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline-none" x-model="user.profile.current_read" />
                                     </div>
                                     <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Gender</label>
-                                        <input class="rounded p-1 text-slate-800 font-semibold" x-model="user.profile.gender" />
+                                        <label class="font-semibold text-xs">Where are you from?</label>
+                                        <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" x-model="user.profile.country" />
                                     </div>
                                     <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]" @click="confirmPersonalInfoBtnClicked">Confirm</button>
                                 </div>

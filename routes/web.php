@@ -30,7 +30,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     });
    
     Route::group(['prefix' => 'profile/{user}'], function() {
-        Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
+        Route::get('/', fn() => view('profile'))->name('profile');
         Route::group(['middleware' => 'can:update,user'], function() {
             Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
             Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
