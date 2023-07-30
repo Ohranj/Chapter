@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PrivacyController,
     ProfileController,
+    TimelineController,
     UserController
 };
 
@@ -22,6 +23,11 @@ use App\Http\Controllers\{
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::get('/', fn() => view('dashboard'))->name('dashboard');
+
+    Route::group(['prefix' => 'timeline'], function() {
+        Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
+        Route::post('/create', [ TimelineController::class, 'create' ])->name('post.timeline_entry');
+    });
    
     Route::group(['prefix' => 'profile/{user}'], function() {
         Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
@@ -36,5 +42,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
         Route::get('/', fn() => view('my-books'))->name('my_books');  
     });
 });
+
+Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
+    Route::group(['prefix' => 'community'], function() {
+        Route::get('/', fn() => view('explore-community'))->name('explore_community');  
+    });
+    
+    Route::group(['prefix' => 'books'], function() {
+        Route::get('/', fn() => view('explore-books'))->name('explore_books');  
+    });
+});
+
+
 
 require __DIR__.'/auth.php';

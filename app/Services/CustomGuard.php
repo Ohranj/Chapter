@@ -124,7 +124,7 @@ class CustomGuard implements StatefulGuard
     /**
      * Get the currently authenticated user.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return User
      */
     public function user() {
         return User::with(['profile', 'privacy'])->where('id', $this->id())->first();
