@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,8 +21,18 @@ class DatabaseSeeder extends Seeder
             'email' => config('app.master_email'),
             'password' => Hash::make(config('app.master_password'))
         ]);
-
         $user->profile()->create();
         $user->privacy()->create();
+
+        User::factory()->count(3)->create()->each(function($x) {
+            $x->profile()->create();
+            $x->privacy()->create();
+        });
+
+        
+        Storage::disk('timelines')->deleteDirectory('/');
+        Storage::disk('avatars')->deleteDirectory('/');
+        Storage::disk('timelines')->makeDirectory('/');
+        Storage::disk('avatars')->makeDirectory('/');
     }
 }

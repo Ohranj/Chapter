@@ -10,14 +10,14 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $appends = ['has_avatar'];
-
     protected $fillable = [
         'country',
         'gender',
         'slogan',
         'avatar'
     ];
+
+    protected $appends = ['has_avatar'];
 
     /**
      * 

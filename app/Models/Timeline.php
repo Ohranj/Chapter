@@ -16,12 +16,22 @@ class Timeline extends Model
         'image_path'
     ];
 
-    protected $appends = ['created_at_human'];
+    protected $appends = ['created_at_human', 'has_image'];
 
+    /**
+     * Model appends
+     */
     protected function createdAtHuman(): Attribute
     {
         return new Attribute(
             get: fn () => Carbon::parse($this->created_at)->setTimezone('Europe/London')->diffForHumans(),
+        );
+    }
+
+    protected function hasImage(): Attribute
+    {
+        return new Attribute(
+            get: fn () => isset($this->image_path),
         );
     }
 

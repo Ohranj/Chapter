@@ -13,15 +13,7 @@ use App\Actions\ActivityLog\CreateSingleLog;
 use App\Actions\Profile\UpdateSingleUsersProfile;
 
 class ProfileController extends Controller
-{
-    /**
-     * 
-     */
-    public function index() {
-        return view('profile');
-    }
-
-    
+{   
      /**
      * 
      */
@@ -35,7 +27,7 @@ class ProfileController extends Controller
     ) {
         $updateSingleUser->run($user, $request->safe()->only('name', 'surname'));
 
-        $profileParams = $request->safe()->only('country', 'gender', 'slogan');
+        $profileParams = $request->safe()->only('country', 'current_read', 'slogan');
         if (isset($request->upload)) {
             $path = $storeNewAvatar->run($request->upload);
             $profileParams = array_merge([ 'avatar' => $path ], $profileParams);

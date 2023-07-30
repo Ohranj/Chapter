@@ -44,10 +44,18 @@ return [
             'throw' => false,
         ],
 
-        'timeline' => [
+        'avatars' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/avatars'),
+            'url' => env('APP_URL').'/storage/avatars',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'timelines' => [
             'driver' => 'local',
             'root' => storage_path('app/public/timelines'),
-            'url' => env('APP_URL').'/storage/timeline',
+            'url' => env('APP_URL').'/storage/timelines',
             'visibility' => 'public',
             'throw' => false,
         ],

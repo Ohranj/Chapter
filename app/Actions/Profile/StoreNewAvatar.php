@@ -11,10 +11,10 @@ class StoreNewAvatar {
         if ($currentAvatar) {
             $this->deleteCurrentAvatar($currentAvatar);
         }
-        return Storage::disk('public')->put('avatars', $newAvatar);
+        return Storage::disk('avatars')->put(Auth::id(), $newAvatar);
     }
 
     private function deleteCurrentAvatar($currentAvatar) {
-        Storage::disk('public')->delete($currentAvatar);
+        Storage::disk('avatars')->delete($currentAvatar);
     }
 }
