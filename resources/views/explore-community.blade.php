@@ -29,11 +29,9 @@
                                             </small>
                                         </div>
                                         <div class="text-xs self-end">
-                                            <button class="border border-slate-500 rounded px-1">Horror</button>
-                                            <button class="border border-slate-500 rounded px-1">Comedy</button>
-                                            <button class="border border-slate-500 rounded px-1">Fantasy</button>
-                                            <button class="border border-slate-500 rounded px-1">Romance</button>
-                                            <button class="border border-slate-500 rounded px-1">Sci-Fi</button>
+                                            <template x-for="tag in nabu.tags">
+                                                <button class="border border-slate-500 rounded px-1" x-text="tag.tag"></button>
+                                            </template>
                                         </div>
                                         <x-svg.star stroke="#f59e0b" class="w-5 h-5 absolute top-2 right-2" fill="#f59e0b" />
                                     </div>

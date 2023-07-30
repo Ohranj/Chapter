@@ -14,9 +14,9 @@ use App\Actions\Profile\UpdateSingleUsersProfile;
 
 class ProfileController extends Controller
 {   
-     /**
+    /**
      * 
-     */
+    */
     public function update(
         User $user,
         UpdateProfileRequest $request, 
@@ -25,6 +25,7 @@ class ProfileController extends Controller
         CreateSingleLog $createSingleLog,
         UpdateSingleUser $updateSingleUser
     ) {
+        $user->tags()->sync($request->tags);
         $updateSingleUser->run($user, $request->safe()->only('name', 'surname'));
 
         $profileParams = $request->safe()->only('country', 'current_read', 'slogan');

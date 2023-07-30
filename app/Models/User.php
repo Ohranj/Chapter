@@ -95,4 +95,8 @@ class User extends Authenticatable
     public function activity() {
         return $this->morphMany(ActivityLog::class, 'loggable');
     }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class, 'tag_user', 'user_id', 'tag_id')->as('user_tags');
+    }
 }

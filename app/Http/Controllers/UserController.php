@@ -30,7 +30,7 @@ class UserController extends Controller
             [ 'level', User::USER_TYPES[0] ],
             [ 'id', '!=', Auth::id() ]
         ])
-        ->with(['profile', 'privacy'])
+        ->with(['profile', 'privacy', 'tags'])
         ->paginate($request->perPage ?? 10);
 
         return new JsonResponse([ 'success' => true, 'message' => 'Users retrieved', 'data' => $users ]);

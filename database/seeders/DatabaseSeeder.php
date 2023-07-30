@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             [ 'tag' => 'History' ],
             [ 'tag' => 'Travel' ],
             [ 'tag' => 'Crime' ],
-            [ 'tag' => 'Commedy' ],
+            [ 'tag' => 'Comedy' ],
             [ 'tag' => 'Religion' ],
 
         ]);

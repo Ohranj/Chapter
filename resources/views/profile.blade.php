@@ -47,12 +47,42 @@
                                     </div>
                                     <div class="flex flex-col items-start">
                                         <label class="font-semibold text-xs">Please select the genres that interest you most (max: 5)</label>
-                                        <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" />
+                                        <div class="max-h-[125px] overflow-y-scroll bg-slate-300 text-slate-800 w-[225px] rounded scrollbar-hide">
+                                            <template x-for="tag in tags.list">
+                                                <div class="px-1 font-semibold hover:bg-slate-400 cursor-pointer" @click="tagClicked(tag)">
+                                                    <small class="text-inherit" x-text="tag.tag"></small>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="flex gap-1 mt-1">
+                                            <template x-for="tag in tags.selected">
+                                                <button class="border border-slate-500 px-1 text-xs rounded shadow-sm shadow-slate-500 hover:bg-red-400 font-semibold hover:text-slate-800" @click="tagClicked(tag)" x-text="tag.tag"></button>
+                                            </template>
+                                        </div>
                                     </div>
+                    
+
+
+
+
+
+
+
                                     <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Where are you from?</label>
+                                        <label class="font-semibold text-xs">Where are you located?</label>
                                         <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" x-model="user.profile.country" />
                                     </div>
+                                        {{-- NEED TO LOAD IN THE COUNTRIES --}}
+
+
+
+
+
+
+
+
+
+
                                     <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]" @click="confirmPersonalInfoBtnClicked">Confirm</button>
                                 </div>
                             </div>
@@ -142,7 +172,12 @@
                     password: '',
                     password_confirmation: ''
                 },
+                tags: {
+                    list: [],
+                    selected: []
+                },
                 init() {
+                    this.fetchTags();
                     this.$watch('password.show', (state) => {
                         if (state) return;
                         this.password.current = '';
@@ -150,10 +185,24 @@
                         this.password.password = '';
                     })
                 },
+                async fetchTags() {
+                    this.tags.selected = this.user.tags;
+                    const response = await fetch(route('list_tags'));
+                    const json = await response.json();
+                    for (const tag of json.data) {
+                        const selectedIndx = this.tags.selected.findIndex((x) => x.id == tag.id)
+                        if (selectedIndx < 0) {
+                            this.tags.list.push(tag);
+                        }
+                    }
+                },
                 async confirmPersonalInfoBtnClicked() {
                     const response = await fetch(route('post.update_personal_info', { user: this.user }), {
                         method: 'post',
-                        body: JSON.stringify({ ...this.user.profile }),
+                        body: JSON.stringify({ 
+                            ...this.user.profile, 
+                            tags: this.tags.selected.map((x) => x.id) 
+                        }),
                         headers: {
                             'X-CSRF-TOKEN': this.csrfToken,
                             'Content-Type': 'application/json',
@@ -226,6 +275,25 @@
                     }
                     this.password.show = false;
                     Alpine.store('toast').toggle(json.message);
+                },
+                tagClicked(tag) {
+                    const selectedIndx = this.tags.selected.findIndex((x) => x.id === tag.id)
+                    if (selectedIndx < 0) {
+                        if (this.tags.selected.length >= 5) {
+                            return;
+                        }
+                        const indx = this.tags.list.findIndex((x) => x.id === tag.id);
+                        this.tags.list.splice(indx, 1);
+                        this.tags.selected.push(tag)
+                        return;
+                    }
+                    this.tags.selected.splice(selectedIndx, 1)
+                    this.tags.list.push(tag);
+                    this.tags.list.sort((a, b) => {
+                        if (a.tag < b.tag) return -1;
+                        if (a.tag == b.tag) return 0;
+                        return 1;
+                    });
                 }
             })
         </script>

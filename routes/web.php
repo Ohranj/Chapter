@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PrivacyController,
     ProfileController,
+    TagController,
     TimelineController,
     UserController
 };
@@ -23,6 +24,7 @@ use App\Http\Controllers\{
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::get('/', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/tags', TagController::class)->name('list_tags');
 
     Route::group(['prefix' => 'timeline'], function() {
         Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');

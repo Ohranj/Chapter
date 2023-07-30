@@ -25,6 +25,7 @@ class UpdateProfileRequest extends FormRequest
             'upload' => ['nullable', 'file'],
             'country' => ['nullable', 'string'],
             'current_read' => ['nullable', 'string', 'max:75'],
+            'tags' => ['nullable', 'array', 'max:5'],
             'slogan' => ['required', 'string', 'max:150'],
             'name' => ['sometimes', 'required', 'string'],
             'surname' => ['sometimes', 'required', 'string']
