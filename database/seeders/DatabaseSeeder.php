@@ -3,11 +3,16 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Intl\Countries;
+
+\Locale::setDefault('en');
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,8 +43,13 @@ class DatabaseSeeder extends Seeder
             [ 'tag' => 'Crime' ],
             [ 'tag' => 'Comedy' ],
             [ 'tag' => 'Religion' ],
-
         ]);
+
+
+        foreach(Countries::getNames() as $country) {
+            Country::create([ 'country' => $country ]);
+        }
+        
 
         $user = User::create([
             'name' => config('app.master_name'),

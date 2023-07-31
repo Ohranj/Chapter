@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->string('country', 50)->nullable();
-            $table->string('current_read', 75)->default('Help me decide');
-            $table->string('slogan')->nullable()->default('Watching the world go by');
-            $table->string('avatar')->nullable();
+            $table->string('country');
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('countries');
     }
 };

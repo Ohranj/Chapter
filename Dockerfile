@@ -3,15 +3,16 @@ FROM php:8.1-fpm
 ARG user=alex
 ARG nodeVersion=16
 
-RUN docker-php-ext-install pdo pdo_mysql
-
 RUN apt-get update
 RUN apt-get install -y \
     git \
     vim \
     sudo \
     zip \
-    unzip
+    unzip \
+    libicu-dev
+
+RUN docker-php-ext-install pdo pdo_mysql intl
 
 RUN curl -sL https://deb.nodesource.com/setup_{$nodeVersion}.x | sudo -E bash -
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    CountryController,
     PrivacyController,
     ProfileController,
     TagController,
@@ -21,10 +22,10 @@ use App\Http\Controllers\{
 */
 
 
-
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::get('/', fn() => view('dashboard'))->name('dashboard');
     Route::get('/tags', TagController::class)->name('list_tags');
+    Route::get('/countries', CountryController::class)->name('list_countries');
 
     Route::group(['prefix' => 'timeline'], function() {
         Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
@@ -55,7 +56,6 @@ Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
         Route::get('/', fn() => view('explore-books'))->name('explore_books');  
     });
 });
-
 
 
 require __DIR__.'/auth.php';

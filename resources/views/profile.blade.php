@@ -60,29 +60,19 @@
                                             </template>
                                         </div>
                                     </div>
-                    
-
-
-
-
-
-
-
-                                    <div class="flex flex-col items-start">
-                                        <label class="font-semibold text-xs">Where are you located?</label>
-                                        <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" x-model="user.profile.country" />
+                                    <div x-data="{ showDropdown: false }">
+                                        <div class="flex flex-col items-start">
+                                            <label class="font-semibold text-xs">Where are you located?</label>
+                                            <input class="rounded px-1 text-slate-800 font-semibold bg-slate-300 focus-visible:outline" x-model="countries.search" @focus="showDropdown = true; countries.search = null" @click.away="showDropdown = false; countries.search = user.profile.country" @input.debounce.500ms="filteredCountries" />
+                                        </div>
+                                        <div x-cloak x-show="showDropdown" class="mt-1 max-h-[125px] overflow-y-scroll bg-slate-300 text-slate-800 w-[225px] rounded scrollbar-hide">
+                                            <template x-for="country in filteredCountries">
+                                                <div class="px-1 font-semibold hover:bg-slate-400 cursor-pointer" @click="countries.search = country.country; user.profile.country = country.country; showDropdown = false">
+                                                    <small class="text-inherit" x-text="country.country"></small>
+                                                    </div>
+                                            </template>
+                                        </div>
                                     </div>
-                                        {{-- NEED TO LOAD IN THE COUNTRIES --}}
-
-
-
-
-
-
-
-
-
-
                                     <button class="ml-auto bg-indigo-300 text-slate-800 font-semibold text-xs py-1 hover:bg-indigo-400 rounded w-[105px]" @click="confirmPersonalInfoBtnClicked">Confirm</button>
                                 </div>
                             </div>
@@ -134,7 +124,6 @@
                             </div>
                         </div>
                     </div>
-
                     <x-modal-wrapper var="password.show" title="Change My Password">
                         <x-slot name="content">
                             <div class="p-6 text-center text-white flex flex-col gap-2 sm:w-2/3 mx-auto">
@@ -176,7 +165,13 @@
                     list: [],
                     selected: []
                 },
+                countries:  {
+                    list: [],
+                    search: ''
+                },
                 init() {
+                    this.countries.search = this.user.profile.country;
+                    this.fetchCountries();
                     this.fetchTags();
                     this.$watch('password.show', (state) => {
                         if (state) return;
@@ -184,6 +179,11 @@
                         this.password.password_confirmation = ''
                         this.password.password = '';
                     })
+                },
+                async fetchCountries() {
+                    const response = await fetch(route('list_countries'));
+                    const json = await response.json();
+                    this.countries.list = json.data;
                 },
                 async fetchTags() {
                     this.tags.selected = this.user.tags;
@@ -294,7 +294,11 @@
                         if (a.tag == b.tag) return 0;
                         return 1;
                     });
-                }
+                },
+                filteredCountries() {
+                    if (!this.countries.search) return this.countries.list;
+                    return this.countries.list.filter((x) => x.country.toLowerCase().includes(this.countries.search.toLowerCase()))
+                },
             })
         </script>
     </x-slot>
