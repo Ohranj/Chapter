@@ -18,9 +18,7 @@ class AuthenticationTest extends TestCase
     }
 
     public function test_users_can_authenticate(): void {
-        $user = User::factory()->create();
-        $user->profile()->create();
-        $user->privacy()->create();
+        $user = $this->createUser();
 
         $this->post('/login', [
             'email' => $user->email,
@@ -31,9 +29,7 @@ class AuthenticationTest extends TestCase
     }
 
     public function test_users_can_not_authenticate_with_invalid_credentials(): void {
-        $user = User::factory()->create();
-        $user->profile()->create();
-        $user->privacy()->create();
+        $user = $this->createUser();
 
         $this->post('/login', [
             'email' => $user->email,
@@ -48,5 +44,12 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+    }
+
+    private function createUser() {
+        $user = User::factory()->create();
+        $user->profile()->create();
+        $user->privacy()->create();
+        return $user;
     }
 }

@@ -46,14 +46,4 @@ class ProfileController extends Controller
             'data' => [ 'user' => Auth::user() ] 
         ], 201);
     }
-
-    /**
-     * Update password
-     */
-    public function updatePassword() {
-        return response()->json([
-            'success' => true,
-            'message' => 'Password updated'
-        ], 201);
-    }
 }

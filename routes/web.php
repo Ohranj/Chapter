@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     CountryController,
+    FollowUserController,
     PrivacyController,
     ProfileController,
     TagController,
@@ -56,6 +57,8 @@ Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
         Route::get('/', fn() => view('explore-books'))->name('explore_books');  
     });
 });
+
+Route::post('followers/update', [ FollowUserController::class, 'update' ])->name('post.follower');
 
 
 require __DIR__.'/auth.php';

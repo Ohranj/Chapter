@@ -46,7 +46,7 @@
                                 <div x-cloak x-show="nabus.selected" x-transition class="border border-slate-500 shadow-sm shadow-slate-500 rounded p-2">
                                     <div class="flex flex-col">
                                         <div class="self-end">
-                                            <button class="text-xs rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold">Follow</button>
+                                            <button class="text-xs rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold" @click="followBtnPressed">Follow</button>
                                             <button class="text-xs rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold">Message</button>
                                         </div>
                                         <div class="flex gap-2 items-center">
@@ -94,13 +94,30 @@
                 page: this.nabus.currentPage
             }));
             if (response.status != 200) {
-                Alpine.store('toast').toggle('Error fetching Nabuz\'s', false)
+                Alpine.store('toast').toggle('Error fetching Nabu\'s', false)
                 return;
             }
             const json = await response.json();
             const { last_page, data } = json.data
             this.nabus.list = data;
             this.nabus.lastPage = last_page
-        }
+        },
+        async followBtnPressed() {
+            const response = await fetch(route('post.follower'), {
+                method: 'post',
+                body: JSON.stringify({ id: this.nabus.selected.id }),
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            const json = await response.json();
+            if (response.status != 201) {
+                Alpine.store('toast').toggle(json.message, false)
+                return;
+            }
+            Alpine.store('toast').toggle(json.message)
+        },
     })
 </script>
