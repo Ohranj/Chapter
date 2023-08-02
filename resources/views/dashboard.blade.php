@@ -23,7 +23,7 @@
                         </div>
                     </template>
                 </div>
-                <div class="hidden xl:flex xl:flex-col xl:gap-4 xl:min-w-[325px] xl:basis-[325px] py-4" x-data="{showTrending: true, showFriends: true}">
+                <div class="hidden xl:flex xl:flex-col xl:gap-8 xl:min-w-[325px] xl:basis-[325px] py-4" x-data="{showTrending: true, showFriends: true}">
                     <div class="rounded shadow shadow-slate-500 p-2 flex flex-col bg-transparent">
                         <div class="flex justify-between items-center cursor-pointer h-12" @click="showTrending = !showTrending">
                             <h2 class="text-amber-500 font-semibold" >Top Trending</h2>

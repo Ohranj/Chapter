@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Actions\User\CreateSingleUser;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run(CreateSingleUser $createSingleUser): void
     {
         DB::table('tags')->insert([
             [ 'tag' => 'Fantasy' ],
@@ -51,16 +52,16 @@ class DatabaseSeeder extends Seeder
         }
         
 
-        $user = User::create([
+        $params = [
             'name' => config('app.master_name'),
             'surname' => config('app.master_surname'),
             'email' => config('app.master_email'),
             'password' => Hash::make(config('app.master_password')),
             'level' => User::USER_TYPES[1]
-        ]);
-        $user->profile()->create();
-        $user->privacy()->create();
+        ];
+        $createSingleUser->run($params);
 
+        
         User::factory()->count(3)->create()->each(function($x) {
             $x->profile()->create();
             $x->privacy()->create();
