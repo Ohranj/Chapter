@@ -16,14 +16,14 @@ class FollowUserController extends Controller
     public function update(Request $request, ToggleSingleFollowing $toggleSingleFollowing) {
         $user = User::find(Auth::id());
 
-        $toggleSingleFollowing->run($user, $request->id);
+        [ 'attached' => $attached ] = $toggleSingleFollowing->run($user, $request->id);
 
-        $user->load('following');
+        $message = count($attached)
+            ? 'Friend Added'
+            : 'Friend Removed';
 
-        return new JsonResponse([ 
-            'success' => true, 
-            'message' => 'Followers updated', 
-            'data' => $user 
-        ], 201);
+        $user->load('following:id,name,surname');
+
+        return new JsonResponse([ 'success' => true, 'message' => $message, 'data' => $user ], 201);
     }
 }

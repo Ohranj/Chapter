@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     CountryController,
+    ExploreCommunityController,
     FollowUserController,
     PrivacyController,
     ProfileController,
@@ -49,7 +50,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 
 Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
     Route::group(['prefix' => 'community'], function() {
-        Route::get('/', fn() => view('explore-community'))->name('explore_community');  
+        Route::get('/', ExploreCommunityController::class)->name('explore_community');  
         Route::get('/nabus', [ UserController::class, 'list' ])->name('list_nabus');
     });
     

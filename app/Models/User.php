@@ -63,7 +63,7 @@ class User extends Authenticatable
     protected function initials(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->name[0] . $this->surname[0],
+            get: fn () => ucwords($this->name[0]) . ucwords($this->surname[0]),
         );
     }
 

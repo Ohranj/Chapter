@@ -3,7 +3,9 @@
         <p class="text-2xl tracking-wider font-extrabold align-middle"><x-svg.book stroke="orange" class="w-10 h-10 inline-block align-middle" fill="none" />24Nabu</p>
         <div class="hidden 2xl:block ml-auto relative">
             <div :class="showSettings ? 'text-amber-500' : ''" class="group cursor-pointer hover:text-amber-500 text-xs flex items-center gap-2" @click="showSettings = !showSettings">
-                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-9 h-9 inline shadow-sm shadow-amber-200" :src="'/storage/avatars/' + user.profile.avatar" />
+                <template x-if="user.profile.has_avatar">
+                    <img class="object-cover rounded-full w-9 h-9 inline shadow-sm shadow-amber-200" :src="'/storage/avatars/' + user.profile.avatar" />
+                </template>
                 <small x-show="!user.profile.has_avatar" class="text-sm font-semibold w-9 h-9 rounded-full flex flex-col justify-center shadow shadow-amber-400 rounded-full bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700 tracking-wide" x-text="user.initials"></small> 
                 <span class="text-inherit font-semibold group-hover:underline decoration-2 underline-offset-4" x-text="user.full_name"></span>
             </div>
@@ -24,7 +26,9 @@
     <div x-cloak x-show="showMobile" x-collapse class="2xl:hidden absolute bg-slate-600 top-0 left-0 right-0 px-2 z-40" @click.away="showMobile = false">
         <div class="flex justify-between items-center pt-8">
             <div :class="showSettings ? 'text-amber-500' : ''" class="group cursor-pointer hover:text-amber-500 text-xs flex items-center gap-2">
-                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-9 h-9 inline shadow-sm shadow-amber-400" :src="'/storage/avatars/' + user.profile.avatar" />
+                <template x-if="user.profile.has_avatar">
+                    <img class="object-cover rounded-full w-9 h-9 inline shadow-sm shadow-amber-400" :src="'/storage/avatars/' + user.profile.avatar" />
+                </template>
                 <small x-show="!user.profile.has_avatar" class="text-sm font-semibold w-9 h-9 rounded-full flex flex-col justify-center rounded-full bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700 tracking-wide" x-text="user.initials"></small> 
                 <span class="text-inherit font-semibold group-hover:underline decoration-2 underline-offset-4" x-text="user.full_name"></span>
             </div>

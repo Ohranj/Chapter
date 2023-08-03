@@ -4,15 +4,15 @@
             <x-navbarTop></x-navbarTop>
             <div class="flex grow gap-8 sm:w-5/6 mx-auto">
                 <x-navbarSide />
-                <div class="grow py-4" x-data="community">
+                <div class="grow py-4" x-data="community({ user: {{ $user->toJson() }} })">
                     <h1 class="text-xl text-amber-500 font-semibold">There's a world out there...</h1>
                     <small>Use this space to explore our ever-growing community. Network with like-minded readers, expand your interests and discover your next chapter.</small>
                     <div class="flex flex-col gap-4 mt-12">
                         <div class="flex gap-6">
                             <div class="grow flex flex-col basis-7/12 gap-3">
                                 <template x-for="nabu in nabus.list">
-                                    <div class="relative shadow rounded p-2 hover:scale-[1.01] hover:bg-slate-700 cursor-pointer" :class="nabus.selected?.id === nabu.id ? 'shadow-amber-400' : 'shadow-slate-500'">
-                                        <div class="flex gap-4 items-center " @click="nabus.selected?.id == nabu.id ? nabus.selected = null : nabus.selected = nabu">
+                                    <div class="relative shadow rounded p-2 hover:scale-[1.01] hover:bg-slate-700 cursor-pointer" :class="nabus.selected?.id === nabu.id ? 'shadow-amber-400' : 'shadow-slate-500'" @click="nabus.selected?.id == nabu.id ? nabus.selected = null : nabus.selected = nabu">
+                                        <div class="flex gap-4 items-center ">
                                             <template x-if="!nabu.profile.has_avatar">
                                                 <small class="w-9 h-9 bg-red-500 rounded-full flex items-center justify-center tracking-wide font-semibold shadow shadow-amber-500 bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700" x-text="nabu.initials"></small>
                                             </template>
@@ -32,7 +32,8 @@
                                                     <small class="font-semibold text-right" x-text="nabu.profile.country"></small>
                                                 </div>
                                             </div>
-                                            <x-svg.star stroke="#f59e0b" class="w-5 h-5 absolute top-2 right-2" fill="#f59e0b" />
+                                            <x-svg.star x-show="!isFollowing(nabu)" stroke="#f59e0b" class="w-6 h-6 absolute top-2 right-2" fill="none" />
+                                            <x-svg.star x-cloak x-show="isFollowing(nabu)" stroke="#f59e0b" class="w-6 h-6 absolute top-2 right-2" fill="#f59e0b" />
                                         </div>
                                         <div class="flex gap-1 justify-end text-xs mt-1">
                                             <template x-for="tag in nabu.tags">
@@ -46,8 +47,8 @@
                                 <div x-cloak x-show="nabus.selected" x-transition class="border border-slate-500 shadow-sm shadow-slate-500 rounded p-2">
                                     <div class="flex flex-col">
                                         <div class="self-end">
-                                            <button class="text-xs rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold" @click="followBtnPressed">Follow</button>
-                                            <button class="text-xs rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold">Message</button>
+                                            <button class="text-xs w-[75px] rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold" @click="followBtnPressed" x-text="isFollowing(nabus.selected) ? 'Unfollow' : 'Follow'"></button>
+                                            <button class="text-xs w-[75px] rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold">Message</button>
                                         </div>
                                         <div class="flex gap-2 items-center">
                                             <template x-if="!nabus.selected?.profile.has_avatar">
@@ -64,7 +65,6 @@
                                 </div>
                             </div>
                         </div>
-                       
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
 {{-- Search by book genre and name and country --}}
 
 <script>
-    const community = () => ({
+    const community = (e) => ({
         nabus: {
             list: [],
             currentPage: 1,
@@ -117,7 +117,13 @@
                 Alpine.store('toast').toggle(json.message, false)
                 return;
             }
+            this.user = json.data;
             Alpine.store('toast').toggle(json.message)
         },
+        isFollowing(nabu) {
+            if (!nabu) return;
+            return this.user.following.findIndex((x) => x.id === nabu.id) >= 0
+        },
+        ...e
     })
 </script>

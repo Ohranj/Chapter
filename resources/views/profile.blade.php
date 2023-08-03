@@ -19,8 +19,10 @@
                             </div>
                             <div x-cloak x-show="!editProfile.show" class="w-[105px] h-[105px]">
                                 <small x-show="!user.profile.has_avatar" class="text-4xl font-semibold w-[105px] h-[105px] rounded-full flex flex-col justify-center shadow shadow-amber-400 rounded-full bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700 tracking-wide" x-text="user.initials"></small> 
+                                <template x-if="user.profile.has_avatar">
+                                    <img class="object-cover rounded-full w-full h-full shadow shadow-amber-400" :src="'/storage/avatars/' + user.profile.avatar" />
+                                </template>
                                 
-                                <img x-cloak x-show="user.profile.has_avatar" class="object-cover rounded-full w-full h-full shadow shadow-amber-400" :src="'/storage/avatars/' + user.profile.avatar" />
                             </div>
                             <div class="flex flex-col" :class="editProfile.show ? 'gap-2' : 'gap-1'">
                                 <div x-cloak x-show="editProfile.show" class="flex gap-1">
