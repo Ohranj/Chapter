@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Privacy;
 use App\Models\Timeline;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -102,5 +103,12 @@ class User extends Authenticatable
 
     public function following() {
         return $this->belongsToMany(User::class, FollowUser::class, 'user_id', 'following_id');
+    }
+
+    /**
+     * Local scopes
+     */
+    public function scopeRandomFriends(Builder $query, int $count) {
+        $query->inRandomOrder()->take($count);
     }
 }

@@ -127,7 +127,14 @@ class CustomGuard implements StatefulGuard
      * @return User
      */
     public function user() {
-        return User::with(['profile', 'privacy', 'tags'])->where('id', $this->id())->first();
+        return User::with([
+            'profile', 
+            'privacy', 
+            'tags', 
+            'following' => fn($q) => $q->randomFriends(3)
+        ])
+        ->where('id', $this->id())
+        ->first();
     }
 
     /**

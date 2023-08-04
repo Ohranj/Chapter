@@ -59,23 +59,18 @@
                         </div>
                         <div x-cloak x-show="showFriends" x-collapse class="text-center">
                             <div class="flex flex-col gap-2 divide-y divide-dashed divide-slate-500 text-left">
-                                <div class="text-xs group cursor-pointer pt-1">
-                                    <p class="text-inherit overflow-hidden text-ellipsis whitespace-nowrap block group-hover:italic">
-                                        Friend Number1
-                                    </p>
-                                </div>
-                                <div class="text-xs group cursor-pointer pt-1">
-                                    <p class="text-inherit overflow-hidden text-ellipsis whitespace-nowrap block group-hover:italic">
-                                        Friend Number2
-                                    </p>
-                                </div>
-                                <div class="text-xs group cursor-pointer pt-1">
-                                    <p class="text-inherit overflow-hidden text-ellipsis whitespace-nowrap block group-hover:italic">
-                                        Friend Number3
-                                    </p>
-                                </div>
+                                <template x-if="user.following.length">
+                                    <template x-for="friend in user.following">
+                                        <div class="group cursor-pointer pt-1">
+                                            <small class="overflow-hidden text-ellipsis whitespace-nowrap block group-hover:italic" x-text="friend.full_name"></small>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template x-if="!user.following.length">
+                                    <small class="text-center">Explore our community to interact, discover and make friends.</small>
+                                </template>
                             </div>
-                            <small class="text-amber-500 mt-4 font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
+                            <small x-cloak x-show="user.following.length" class="text-amber-500 mt-4 font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
                         </div>
                     </div>
                 </div>
