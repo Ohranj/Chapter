@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class FollowUserController extends Controller
 {
     /**
-     * @todo PUT A POLICY AGAINST THOSE THAT DONT WANT TO BE FOLLOWED - Create this ability in privacy
+     * @param Request $request
+     * @param ToggleSingleFollowing $toggleSingleFollowing
+     * 
+     * @todo PUT A POLICY AGAINST TO BLOCK PEOPLE - Create this ability in privacy
      */
-    public function update(Request $request, ToggleSingleFollowing $toggleSingleFollowing) {
+    public function update(Request $request, ToggleSingleFollowing $toggleSingleFollowing): JsonResponse {
         $user = User::find(Auth::id());
 
         [ 'attached' => $attached ] = $toggleSingleFollowing->run($user, $request->id);

@@ -15,8 +15,12 @@ class UserController extends Controller
 {
     /**
      * Update a user model
+     * @param User $user
+     * @param UpdateUserRequest $updateUserRequest
+     * @param UpdateSingleUser $updateSingleUser
+     * @param CreateSingleLog $createSingleLog
      */
-    public function update(User $user, UpdateUserRequest $request, UpdateSingleUser $updateSingleUser, CreateSingleLog $createSingleLog) { 
+    public function update(User $user, UpdateUserRequest $request, UpdateSingleUser $updateSingleUser, CreateSingleLog $createSingleLog): JsonResponse { 
         $updateSingleUser->run($user, $request->safe()->only(['password']));
         $createSingleLog->run($user, ActivityLog::ACTIVITY['Password Updated']);
         return new JsonResponse([ 'success' => true, 'message' => 'Account updated' ], 201);
@@ -24,14 +28,13 @@ class UserController extends Controller
 
     /**
      * Paginated list of users
+     * @param Request $request
      */
-    public function list(Request $request) {
-        $users = User::where([
-            [ 'level', User::USER_TYPES[0] ],
-            [ 'id', '!=', Auth::id() ]
-        ])
-        ->with(['profile', 'privacy', 'tags'])
-        ->paginate($request->perPage ?? 10);
+    public function list(Request $request): JsonResponse {
+        $users = User::where([ [ 'level', User::USER_TYPES[0] ], [ 'id', '!=', Auth::id() ] ])
+            ->with(['profile', 'tags'])
+            ->select('id', 'name', 'surname')
+            ->paginate($request->perPage ?? 10);
 
         return new JsonResponse([ 'success' => true, 'message' => 'Users retrieved', 'data' => $users ]);
     }

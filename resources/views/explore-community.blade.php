@@ -72,8 +72,6 @@
     </x-slot>
 </x-layouts.auth>
 
-{{-- Do the follow button click next and then set the star to orange if following --}}
-
 {{-- Search by book genre and name and country --}}
 
 <script>

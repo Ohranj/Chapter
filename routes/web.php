@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     ProfileController,
     TagController,
     TimelineController,
+    TrendingController,
     UserController
 };
 
@@ -22,8 +23,6 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::get('/', fn() => view('dashboard'))->name('dashboard');
     Route::get('/tags', TagController::class)->name('list_tags');
@@ -60,6 +59,8 @@ Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
 });
 
 Route::post('followers/update', [ FollowUserController::class, 'update' ])->name('post.follower');
+
+Route::get('/trending', TrendingController::class);
 
 
 require __DIR__.'/auth.php';

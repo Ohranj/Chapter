@@ -193,4 +193,9 @@ return [
     'master_email' => env('MASTER_EMAIL'),
     'master_password' => env('MASTER_PASSWORD'),
 
+    /**
+     * GOOGLE API KEY
+     */
+    'google_api_key' => env('GOOGLE_API_KEY')
+
 ];

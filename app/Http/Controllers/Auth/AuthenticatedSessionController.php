@@ -15,17 +15,28 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): JsonResponse
     {
-        $authenticated = Auth::attempt($request->safe()->only(['email', 'password']));
-        if (!$authenticated) {
-            return new JsonResponse([
-                'success' => false,
-                'message' => 'We are unable to validate these credentials. Please check and try again.'
+        if(!$request->isNotRateLimited()) {
+            return new JsonResponse([ 
+                'success' => false, 
+                'message' => 'You have tried this too much. Please wait ' . $request->rateLimitAvailableIn() . ' seconds before trying again' 
             ], 422);
         }
-        // $request->authenticate();
+
+        $authenticated = Auth::attempt($request->safe()->only(['email', 'password']));
+
+        if (!$authenticated) {
+            return new JsonResponse([ 
+                'success' => false, 
+                'message' => 'We are unable to validate these credentials. Please check and try again.' 
+            ], 422);
+        }
+
+        $request->clearRateLimiter();
         $request->session()->regenerate();
         return new JsonResponse([ 'success' => true, 'message' => 'Sign in successfull' ], 200);
     }
+
+
 
     /**
      * Destroy an authenticated session.
