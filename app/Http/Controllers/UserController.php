@@ -14,6 +14,13 @@ use App\Actions\ActivityLog\CreateSingleLog;
 class UserController extends Controller
 {
     /**
+     * Return a users dashboard
+     */
+    public function index() {
+        return view('dashboard');
+    }
+    
+    /**
      * Update a user model
      * @param User $user
      * @param UpdateUserRequest $updateUserRequest

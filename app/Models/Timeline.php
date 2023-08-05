@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,12 +13,10 @@ class Timeline extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'entry',
-        'image_path'
-    ];
+    protected $fillable = [ 'entry', 'image_path' ];
 
     protected $appends = ['created_at_human', 'has_image'];
+
 
     /**
      * Model appends
@@ -35,10 +35,19 @@ class Timeline extends Model
         );
     }
 
+
     /**
      * Relations
      */
     public function author() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+
+    /**
+     * Query scopes
+     */
+    public function scopeSearchWithinIds(Builder $query, array $followings) {
+        $query->whereIntegerInRaw('user_id', $followings)->orWhere('user_id', Auth::id());
     }
 }

@@ -24,7 +24,7 @@ use App\Http\Controllers\{
 |
 */
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
-    Route::get('/', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/', [ UserController::class, 'index' ])->name('dashboard');
     Route::get('/tags', TagController::class)->name('list_tags');
     Route::get('/countries', CountryController::class)->name('list_countries');
 
