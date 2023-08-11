@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -91,6 +92,10 @@ class User extends Authenticatable
 
     public function following() {
         return $this->belongsToMany(User::class, FollowUser::class, 'user_id', 'following_id');
+    }
+
+    public function timelineLikes(): MorphToMany {
+        return $this->morphedByMany(TimeLine::class, 'likeable', 'likes');
     }
 
     /**

@@ -8,19 +8,7 @@
                     <x-timelineComment />
                     <small class="font-semibold my-3 text-right block">Currently Reading: <span class="text-amber-500" x-text="user.profile.current_read"></span></small>
                     <template x-for="entry in timeline">
-                        <div class="bg-slate-700 rounded px-4 relative shadow-sm shadow-slate-500">
-                            <div class="p-4 flex flex-col gap-2">
-                                <small class="text-slate-400" x-text="entry.created_at_human"></small>
-                                <small class="font-semibold" x-text="entry.entry"></small>
-                            </div>
-                            <template x-if="entry.has_image">
-                                <image :src="'/storage/timelines/' + entry.image_path" />
-                            </template>
-                            <x-svg.love stroke="#f59e0b" class="absolute top-4 right-4 w-6 h-6 ml-auto block cursor-pointer hover:scale-[1.05]" fill="#f59e0b" />
-                            <div class="p-4 text-center">
-                                <small class="text-center text-amber-500 font-semibold cursor-pointer hover:underline underline-offset-2 decoration-2">View Comments</small>
-                            </div>
-                        </div>
+                        <x-timelineItem />
                     </template>
                 </div>
                 <div class="hidden xl:flex xl:flex-col xl:gap-8 xl:min-w-[325px] xl:basis-[325px] py-4" x-data="{showTrending: true, showFriends: true}">
@@ -121,6 +109,20 @@
             this.$refs.timelineImageInput.value = ''
             this.fetchTimeline();
             Alpine.store('toast').toggle(json.message)         
+        },
+        async toggleEntryLike(entry) {
+            const response = await fetch(route('put.like', { timeline: entry.id }), {
+                method: 'put',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            if (response.status != 201) {
+                return;
+            }
+            this.fetchTimeline();
         },
         ...e
     })

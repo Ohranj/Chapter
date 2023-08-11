@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     CountryController,
     ExploreCommunityController,
     FollowUserController,
+    LikeController,
     PrivacyController,
     ProfileController,
     TagController,
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::group(['prefix' => 'timeline'], function() {
         Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
         Route::post('/create', [ TimelineController::class, 'create' ])->name('post.timeline_entry');
+        Route::put('/like/{timeline}', [ LikeController::class, 'update' ])->name('put.like');
     });
    
     Route::group(['prefix' => 'profile/{user}'], function() {

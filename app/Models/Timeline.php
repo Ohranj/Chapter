@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Timeline extends Model
@@ -41,6 +42,10 @@ class Timeline extends Model
      */
     public function author() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function likes(): MorphMany {
+        return $this->morphMany(Like::class, 'likeable');
     }
 
 

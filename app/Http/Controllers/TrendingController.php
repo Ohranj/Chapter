@@ -19,7 +19,7 @@ class TrendingController extends Controller
             'intitle' => 'The Fellowship of the Rings',
             'inauthor' => 'Tolkien',
             'langRestrict' => 'en',
-            'projection' => 'lite',
+           
             'maxResults' => 1,
             'printType' => 'books',
             'key' => config('google_api_key')
@@ -42,7 +42,7 @@ class TrendingController extends Controller
         }
 
         return $valid
-            ? dd($responses['fifth']->json())
+            ? dd($responses['first']->json())
             : dd('No bueno');
     }
 }
