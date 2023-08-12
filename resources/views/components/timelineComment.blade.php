@@ -7,7 +7,7 @@
             </template>
             <small x-show="!user.profile.has_avatar" class="w-full h-full flex flex-col justify-center rounded-full bg-gradient-to-tr text-center from-amber-400 to-red-300 text-inherit " x-text="user.initials"></small>      
         </div>
-        <textarea rows="3" class="font-semibold grow text-xs bg-slate-700 rounded py-1 px-2 focus-visible:outline-none focus-visible:border resize-none focus-visible:border-slate-500" :placeholder="'Hello ' + user.name + ', what is on your mind?'" maxlength="475" x-model="entry.text"></textarea>
+        <textarea rows="3" class="font-semibold grow text-xs bg-slate-700 rounded py-1 px-2 focus-visible:outline-none focus-visible:border resize-none focus-visible:border-slate-500" :placeholder="'Hello ' + user.name + ', what is on your mind?'" maxlength="750" x-model="entry.text"></textarea>
     </div>
     <div class="flex justify-between items-end">
         <x-svg.image x-show="!entry.file" class="ml-11 w-6 h-6 cursor-pointer hover:scale-[1.05]" stroke="currentColor" fill="none" @click="$refs.timelineImageInput.click()" />

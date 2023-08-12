@@ -22,7 +22,7 @@ class CreateTimelineEntryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => ['required', 'string', 'max:475'],
+            'text' => ['required', 'string', 'max:750'],
             'upload' => ['sometimes', 'required', 'file']
         ];
     }

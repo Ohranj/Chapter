@@ -33,6 +33,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
         Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
         Route::post('/create', [ TimelineController::class, 'create' ])->name('post.timeline_entry');
         Route::put('/like/{timeline}', [ LikeController::class, 'update' ])->name('put.like');
+        Route::delete('/{timeline}', [ TimelineController::class, 'delete' ])->name('delete.timeline_entry');
     });
    
     Route::group(['prefix' => 'profile/{user}'], function() {

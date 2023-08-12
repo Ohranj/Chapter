@@ -104,6 +104,7 @@
             text: '',
             file: null
         },
+        deleteEntry: null,
         init() {
             this.fetchTimeline();
         },
@@ -154,6 +155,23 @@
                 return;
             }
             Alpine.store('toast').toggle(json.message)  
+            this.fetchTimeline();
+        },
+        async entryConfirmDeleteBtnPressed() {
+            const response = await fetch(route('delete.timeline_entry', { timeline: this.deleteEntry.id }), {
+                method: 'delete',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            const json = await response.json();
+            if (response.status != 201) {
+                Alpine.store('toast').toggle(json.message, false) 
+                return;
+            }
+            Alpine.store('toast').toggle(json.message) 
             this.fetchTimeline();
         },
         ...e
