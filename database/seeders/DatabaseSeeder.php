@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use App\Actions\User\CreateSingleUser;
 use App\Models\Country;
 use App\Models\User;
@@ -59,17 +57,23 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make(config('app.master_password')),
             'level' => User::USER_TYPES[1]
         ];
-        $createSingleUser->run($params);
+        $master = $createSingleUser->run($params);
 
         
-        User::factory()->count(3)->create()->each(function($x) {
+        User::factory()->count(3)->create()->each(function($x) use($master) {
             $x->profile()->create();
             $x->privacy()->create();
+            $entry = $x->entries()->create([
+                'entry' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc luctus ligula metus, non dapibus lectus vulputate sit amet. Sed varius tincidunt velit vitae finibus. Quisque nisl neque, molestie vitae lacus ut, sollicitudin luctus massa. Vivamus ac commodo erat, sed tempor libero. Aliquam eu ipsum fermentum, interdum lacus nec, maximus erat. Suspendisse suscipit, nibh a laoreet porta, leo nunc iaculis leo, sit amet dapibus est dui ut erat.'
+            ]);
+            $master->following()->toggle([ 'following_id' => $x->id ]);
+            $master->timelineLikes()->toggle($entry);
         });
 
         
         Storage::disk('timelines')->deleteDirectory('/');
         Storage::disk('avatars')->deleteDirectory('/');
+        
         Storage::disk('timelines')->makeDirectory('/');
         Storage::disk('avatars')->makeDirectory('/');
     }

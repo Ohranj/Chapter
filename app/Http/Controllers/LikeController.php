@@ -10,6 +10,6 @@ class LikeController extends Controller
 {
     public function update(Timeline $timeline, ToggleLike $toggleLike) {
         $toggleLike->run($timeline);
-        return new JsonResponse([ 'success' => true, 'message' => 'Like Updated' ], 201);
+        return new JsonResponse([ 'success' => true, 'message' => 'Like Updated for Entry' ], 201);
     }
 }

@@ -9,7 +9,6 @@
         <div class="flex flex-col">
             <p class="text-amber-500 font-semibold text-sm" x-text="entry.author.full_name"></p> 
             <small class="text-slate-400" x-text="entry.created_at_human"></small>
-            
         </div>                       
     </div>
     <div class="md:w-4/5 mx-auto mx-auto flex flex-col gap-2">
