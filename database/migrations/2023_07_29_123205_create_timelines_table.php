@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('timelines', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->index();
-            $table->string('entry', 475);
+            $table->string('entry', 500);
             $table->string('image_path')->nullable();
             $table->softDeletes();
             $table->timestamps();

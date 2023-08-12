@@ -13,7 +13,7 @@
     </div>
     <div class="md:w-4/5 mx-auto mx-auto flex flex-col gap-2">
         <div>
-            <small class="font-semibold" x-text="entry.entry"></small>
+            <small class="font-semibold whitespace-pre-wrap" x-text="entry.entry"></small>
         </div>
         <template x-if="entry.has_image">
             <image class="rounded-lg" :src="'/storage/timelines/' + entry.image_path" />
