@@ -14,7 +14,7 @@ class FollowUserController extends Controller
      * @param Request $request
      * @param ToggleSingleFollowing $toggleSingleFollowing
      * 
-     * @todo PUT A POLICY AGAINST TO BLOCK PEOPLE - Create this ability in privacy
+     * @todo CREATE A BLOCK LIST THAT PEOPLE CAN ADD SO THEY KNOW LONGER SEE
      */
     public function update(Request $request, ToggleSingleFollowing $toggleSingleFollowing): JsonResponse {
         $user = User::find(Auth::id());

@@ -11,4 +11,7 @@ read -t 2
 chown -R www-data:alex .
 chown -R www-data:alex storage/ bootstrap/
 
+echo "Caching config and routes"
+php artisan optimize
+
 echo "SCRIPT COMPLETE"

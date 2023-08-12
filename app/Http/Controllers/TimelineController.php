@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Timeline;
 use App\Models\FollowUser;
 use Illuminate\Http\JsonResponse;
+use App\Actions\Timeline\ToggleLike;
 use Illuminate\Support\Facades\Auth;
-use App\Actions\Timeline\CreateNewEntry;
 use App\Actions\Timeline\DeleteEntry;
+use App\Actions\Timeline\CreateNewEntry;
 use App\Actions\Timeline\StoreNewEntryImage;
 use App\Http\Requests\CreateTimelineEntryRequest;
 
 class TimelineController extends Controller
 {
+    /**
+     * 
+     */
     public function list(): JsonResponse {
         $followings = FollowUser::following()->pluck('following_id')->toArray();
         $timeline = Timeline::with('author.profile')
@@ -30,6 +34,9 @@ class TimelineController extends Controller
         ]);
     }
 
+    /**
+     * 
+     */
     public function create(
         CreateTimelineEntryRequest $request, 
         CreateNewEntry $createNewEntry, 
@@ -44,7 +51,21 @@ class TimelineController extends Controller
         return new JsonResponse([ 'success' => true, 'message' => 'Timeline updated' ], 201);
     }
 
-    public function delete(Timeline $timeline, DeleteEntry $deleteEntry) {
+    /**
+     * 
+     */
+    public function toggleLike(Timeline $timeline, ToggleLike $toggleLike): JsonResponse {
+        [ 'attached' => $attached ] = $toggleLike->run($timeline);
+        $message = count($attached)
+            ? 'Like Added to Entry'
+            : 'Like Removed from Entry';
+        return new JsonResponse([ 'success' => true, 'message' => $message ], 201);
+    }
+
+    /**
+     * 
+     */
+    public function delete(Timeline $timeline, DeleteEntry $deleteEntry): JsonResponse {
         $this->authorize('delete', $timeline);
         $deleteEntry->run($timeline);
         return new JsonResponse([ 'success' => true, 'message' => 'Timeline Entry removed' ], 201);

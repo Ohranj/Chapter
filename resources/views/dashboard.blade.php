@@ -66,7 +66,9 @@
                                     <small class="text-slate-400 block group-hover:italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum, ducimus?</small>
                                 </div>
                             </div>
-                            <small class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
+                            <a href="{{ route('inbox', [ 'user' => Auth::id() ]) }}">
+                                <small class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
+                            </a>
                         </div>
                     </div>
                     <div class="rounded shadow shadow-slate-500 p-2 flex flex-col bg-transparent">

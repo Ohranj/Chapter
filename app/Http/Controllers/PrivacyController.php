@@ -16,7 +16,7 @@ class PrivacyController extends Controller
         Request $request,
         CreateSingleLog $createSingleLog,
         UpdateSingleUsersPrivacy $updateSingleUsersPrivacy
-    ) {
+    ): JsonResponse {
         $updateSingleUsersPrivacy->run($user, $request->only('direct_messages', 'comment_replies'));
         $createSingleLog->run($user, ActivityLog::ACTIVITY['Privacy Updated']);
         return new JsonResponse([ 'success' => true, 'message' => 'Account Updated' ], 201);

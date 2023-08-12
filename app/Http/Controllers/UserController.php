@@ -42,7 +42,6 @@ class UserController extends Controller
             ->with(['profile', 'tags'])
             ->select('id', 'name', 'surname')
             ->paginate($request->perPage ?? 10);
-
         return new JsonResponse([ 'success' => true, 'message' => 'Users retrieved', 'data' => $users ]);
     }
 }

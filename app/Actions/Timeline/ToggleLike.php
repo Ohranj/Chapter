@@ -6,6 +6,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ToggleLike {
     public function run($timeline) {
-        Auth::user()->timelineLikes()->toggle($timeline);
+        return Auth::user()->timelineLikes()->toggle($timeline);
     }
 }

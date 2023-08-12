@@ -7,9 +7,9 @@ use Illuminate\Http\JsonResponse;
 
 class CountryController extends Controller
 {
-    public function __invoke() {
+    public function __invoke(): JsonResponse {
         $countries = Country::all()->toBase();
-
+        
         return new JsonResponse([
             'success' => true,
             'message' => 'Countries fetched',

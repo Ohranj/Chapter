@@ -5,7 +5,6 @@ use App\Http\Controllers\{
     CountryController,
     ExploreCommunityController,
     FollowUserController,
-    LikeController,
     PrivacyController,
     ProfileController,
     TagController,
@@ -32,7 +31,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::group(['prefix' => 'timeline'], function() {
         Route::get('/', [ TimelineController::class, 'list' ])->name('list_timeline_entries');
         Route::post('/create', [ TimelineController::class, 'create' ])->name('post.timeline_entry');
-        Route::put('/like/{timeline}', [ LikeController::class, 'update' ])->name('put.like');
+        Route::put('/like/{timeline}', [ TimelineController::class, 'toggleLike' ])->name('put.like');
         Route::delete('/{timeline}', [ TimelineController::class, 'delete' ])->name('delete.timeline_entry');
     });
    
@@ -47,6 +46,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 
     Route::group(['prefix' => '{user}/books'], function() {
         Route::get('/', fn() => view('my-books'))->name('my_books');  
+    });
+
+    Route::group(['prefix' => '{user}/inbox'], function() {
+        Route::get('/', fn() => view('inbox'))->name('inbox');  
     });
 });
 
