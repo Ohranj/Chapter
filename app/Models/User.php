@@ -4,9 +4,10 @@ namespace App\Models;
 
 use App\Models\Privacy;
 use App\Models\Timeline;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -38,7 +39,7 @@ class User extends Authenticatable
     /**
      * Appended JSON properties
      */
-    protected $appends = ['full_name', 'initials'];
+    protected $appends = ['full_name', 'initials', 'created_at_human'];
 
     /**
      * Concat a users full name
@@ -61,11 +62,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Convert a users created at to human readable
+     */
+    protected function createdAtHuman(): Attribute
+    {
+        return new Attribute(
+            get: fn () => Carbon::parse($this->created_at)->format('jS M y'),
+        );
+    }
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [ 'email_verified_at' => 'datetime', 'password' => 'hashed' ];
+    protected $casts = [ 'password' => 'hashed' ];
 
     /**
      * Relations

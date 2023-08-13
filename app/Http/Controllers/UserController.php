@@ -40,7 +40,7 @@ class UserController extends Controller
     public function list(Request $request): JsonResponse {
         $users = User::where([ [ 'level', User::USER_TYPES[0] ], [ 'id', '!=', Auth::id() ] ])
             ->with(['profile', 'tags'])
-            ->select('id', 'name', 'surname')
+            ->select('id', 'name', 'surname', 'created_at')
             ->paginate($request->perPage ?? 10);
         return new JsonResponse([ 'success' => true, 'message' => 'Users retrieved', 'data' => $users ]);
     }

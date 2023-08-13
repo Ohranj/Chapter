@@ -11,7 +11,7 @@
                         <div class="flex gap-6">
                             <div class="grow flex flex-col basis-7/12 gap-3">
                                 <template x-for="nabu in nabus.list">
-                                    <div class="relative shadow rounded p-2 hover:scale-[1.01] hover:bg-slate-700 cursor-pointer" :class="nabus.selected?.id === nabu.id ? 'shadow-amber-400' : 'shadow-slate-500'" @click="nabus.selected?.id == nabu.id ? nabus.selected = null : nabus.selected = nabu">
+                                    <div class="relative shadow rounded p-2 lg:hover:scale-[1.005] hover:bg-slate-700 cursor-pointer w-3/4" :class="nabus.selected.item?.id === nabu.id ? 'shadow-amber-400' : 'shadow-slate-500'" @click="nabus.selected.message.show = false; nabus.selected.item?.id == nabu.id ? nabus.selected.item = null : nabus.selected.item = nabu">
                                         <div class="flex gap-4 items-center ">
                                             <template x-if="!nabu.profile.has_avatar">
                                                 <small class="w-9 h-9 bg-red-500 rounded-full flex items-center justify-center tracking-wide font-semibold shadow shadow-amber-500 bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700" x-text="nabu.initials"></small>
@@ -21,7 +21,7 @@
                                             </template>                     
                                             <div class="flex flex-col gap-2 grow">
                                                 <div class="flex flex-col">
-                                                    <small class="font-semibold text-amber-500 text-sm" x-text="nabu.full_name"></small>
+                                                    <p class="font-semibold text-amber-500" x-text="nabu.full_name"></p>
                                                     <small class="italic" x-text="nabu.profile.slogan"></small>
                                                 </div>
                                                 <div class="flex justify-between items-center">
@@ -40,29 +40,18 @@
                                                 <button class="border border-slate-500 rounded px-1" x-text="tag.tag"></button>
                                             </template>
                                         </div>
+                                        <div x-cloak x-show="nabus.selected.item?.id == nabu.id" x-collapse.duration.500ms :class="{'opacity-10': !nabus.selected.item}" class="pl-10">
+                                            <div class="flex justify-end gap-1">
+                                                <button class="text-xs w-[75px] rounded border p-1 font-semibold" :class="isFollowing(nabus.selected.item) ? ' hover:bg-slate-500 border-slate-500' : 'border-indigo-400 hover:border-indigo-500 bg-indigo-400 hover:bg-indigo-500'" @click.stop="followBtnPressed" x-text="isFollowing(nabus.selected.item) ? 'Unfollow' : 'Follow'"></button>
+                                                <button class="text-xs w-[75px] rounded border p-1 font-semibold" @click.stop="nabus.selected.message.show = !nabus.selected.message.show" :class="nabus.selected.message.show ? 'hover:bg-slate-500 border-slate-500' : 'border-green-500 bg-green-500 hover:bg-green-600'">Message</button>
+                                            </div>   
+                                            <div x-cloak x-show="nabus.selected.message.show" x-collapse.duration>
+                                                <textarea rows="3" class="mt-2 block font-semibold text-xs bg-slate-700 rounded py-1 px-2 focus-visible:outline-none border resize-none border-slate-500 w-full" :placeholder="'Send a direct message to ' + nabus.selected.item?.name + '...'" maxlength="750" @click.stop x-model="nabus.selected.message.content"></textarea>
+                                            </div>
+                                            <small class="font-semibold">Member since: <span class="text-amber-500" x-text="nabus.selected.item?.created_at_human"></span></small>
+                                        </div>
                                     </div>
                                 </template>
-                            </div>
-                            <div class="basis-5/12">
-                                <div x-cloak x-show="nabus.selected" x-transition class="border border-slate-500 shadow-sm shadow-slate-500 rounded p-2">
-                                    <div class="flex flex-col">
-                                        <div class="self-end">
-                                            <button class="text-xs w-[75px] rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold" @click="followBtnPressed" x-text="isFollowing(nabus.selected) ? 'Unfollow' : 'Follow'"></button>
-                                            <button class="text-xs w-[75px] rounded border p-1 border-slate-500 hover:bg-slate-500 font-semibold">Message</button>
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <template x-if="!nabus.selected?.profile.has_avatar">
-                                                <p class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center tracking-wide font-semibold shadow shadow-amber-500 bg-gradient-to-tr text-center from-amber-400 to-red-300 text-slate-700" x-text="nabus.selected?.initials"></p>
-                                            </template>
-                                            <template x-if="nabus.selected?.profile.has_avatar">
-                                                <img class="object-cover rounded-full w-12 h-12 inline shadow-sm shadow-amber-200" :src="'/storage/avatars/' + nabus.selected.profile.avatar" />
-                                            </template>
-                                            <div class="grow">
-                                                <p class="font-semibold tracking-wide" x-text="nabus.selected?.full_name"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -81,10 +70,17 @@
             currentPage: 1,
             lastPage: 1,
             perPage: 10,
-            selected: null
+            selected: {
+                item: null,
+                message: {
+                    show: false,
+                    content: '',
+                },
+            }
         },
         init() {
             this.fetchNabus()
+            this.$watch('nabus.selected.item', () => this.nabus.selected.message.content = '')
         },
         async fetchNabus() {
             const response = await fetch(route('list_nabus') + '?' + new URLSearchParams({
@@ -103,7 +99,7 @@
         async followBtnPressed() {
             const response = await fetch(route('post.follower'), {
                 method: 'post',
-                body: JSON.stringify({ id: this.nabus.selected.id }),
+                body: JSON.stringify({ id: this.nabus.selected.item.id }),
                 headers: {
                     'X-CSRF-TOKEN': this.csrfToken,
                     'Content-Type': 'application/json',
