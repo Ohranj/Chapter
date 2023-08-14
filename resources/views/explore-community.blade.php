@@ -47,6 +47,7 @@
                                             </div>   
                                             <div x-cloak x-show="nabus.selected.message.show" x-collapse.duration>
                                                 <textarea rows="3" class="mt-2 block font-semibold text-xs bg-slate-700 rounded py-1 px-2 focus-visible:outline-none border resize-none border-slate-500 w-full" :placeholder="'Send a direct message to ' + nabus.selected.item?.name + '...'" maxlength="750" @click.stop x-model="nabus.selected.message.content"></textarea>
+                                                <button class="block ml-auto mt-1 font-semibold bg-green-500 w-[75px] rounded text-white text-xs py-1 px-2" @click.stop="sendMessageBtnPressed">Send</button>
                                             </div>
                                             <small class="font-semibold">Member since: <span class="text-amber-500" x-text="nabus.selected.item?.created_at_human"></span></small>
                                         </div>
@@ -117,6 +118,27 @@
         isFollowing(nabu) {
             if (!nabu) return;
             return this.user.following.findIndex((x) => x.id === nabu.id) >= 0
+        },
+        async sendMessageBtnPressed() {
+            const response = await fetch(route('post.comment'), {
+                method: 'post',
+                body: JSON.stringify({
+                    'recipient': this.nabus.selected.item.id,
+                    'comment': this.nabus.selected.message.content
+                }),
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            });
+            const json = await response.json();
+            if (response.status != 201) {
+                Alpine.store('toast').toggle(json.message, false)
+                return;
+            }
+            this.nabus.selected.message.show = false;
+            Alpine.store('toast').toggle(json.message)
         },
         ...e
     })

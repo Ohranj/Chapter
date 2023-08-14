@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    CommentController,
     CountryController,
     ExploreCommunityController,
     FollowUserController,
+    InboxController,
     PrivacyController,
     ProfileController,
     TagController,
@@ -35,21 +37,25 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
         Route::delete('/{timeline}', [ TimelineController::class, 'delete' ])->name('delete.timeline_entry');
     });
    
-    Route::group(['prefix' => 'profile/{user}'], function() {
-        Route::get('/', fn() => view('profile'))->name('profile');
-        Route::group(['middleware' => 'can:update,user'], function() {
-            Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
-            Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
-            Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user');
-        });
+    Route::group(['prefix' => 'profile'], function() {
+        Route::get('/', [ ProfileController::class, 'index' ])->name('profile');
+        Route::post('/personal', [ ProfileController::class, 'update' ])->name('post.update_personal_info');
+        Route::post('/privacy', [ PrivacyController::class, 'update' ])->name('post.update_privacy');
+        Route::post('/password', [ UserController::class, 'update' ])->name('post.update_user');
+        
     });
 
-    Route::group(['prefix' => '{user}/books'], function() {
+    Route::group(['prefix' => 'books'], function() {
         Route::get('/', fn() => view('my-books'))->name('my_books');  
     });
 
-    Route::group(['prefix' => '{user}/inbox'], function() {
-        Route::get('/', fn() => view('inbox'))->name('inbox');  
+    Route::group(['prefix' => 'stats'], function() {
+        Route::get('/', fn() => view('my-stats'))->name('my_stats');  
+    });
+
+    Route::group(['prefix' => 'inbox'], function() {
+        Route::get('/', [InboxController::class, 'index'])->name('inbox');
+        Route::get('/list', [ InboxController::class, 'list' ])->name('list_inbox');
     });
 });
 
@@ -65,6 +71,7 @@ Route::group(['prefix' => 'explore', 'middleware' => ['auth']], function() {
 });
 
 Route::post('followers/update', [ FollowUserController::class, 'update' ])->name('post.follower');
+Route::post('/comments', [ CommentController::class, 'create' ])->name('post.comment');
 
 Route::get('/trending', TrendingController::class);
 

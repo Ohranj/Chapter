@@ -60,14 +60,16 @@
                                 <div class="group cursor-pointer pt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                                     <small class="group-hover:italic block">Sender Name1</small>
                                     <small class="text-slate-400 block group-hover:italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum, ducimus?</small>
+                                    <x-svg.envelope-closed stroke="green" class="ml-auto block w-5 h-5" fill="none" />
                                 </div>
                                 <div class="group cursor-pointer pt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                                     <small class="group-hover:italic block">Sender Name2</small>
                                     <small class="text-slate-400 block group-hover:italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum, ducimus?</small>
+                                    <x-svg.envelope-closed stroke="red" class="ml-auto block w-5 h-5" fill="none" />
                                 </div>
                             </div>
-                            <a href="{{ route('inbox', [ 'user' => Auth::id() ]) }}">
-                                <small class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
+                            <a href="{{ route('inbox') }}">
+                                <small class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2 w-fit inline-block">View all</small>
                             </a>
                         </div>
                     </div>
@@ -90,7 +92,7 @@
                                     <small class="text-center">Explore our community to interact, discover and make friends.</small>
                                 </template>
                             </div>
-                            <small x-cloak x-show="user.following.length" class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2">View all</small>
+                            <small x-cloak x-show="user.following.length" class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2 w-fit inline-block">View all</small>
                         </div>
                     </div>
                 </div>
