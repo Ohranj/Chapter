@@ -28,23 +28,15 @@ class Comment extends Model
      * Scopes
      */
     public function scopeReceived(Builder $query, int $user_id) {
-        $query->where([
-            [ 'commentable_id', $user_id ], 
-            [ 'parent_id', null ]
-        ])
-        ->with('author:id,name,surname');
+        $query->where([[ 'commentable_id', $user_id ], [ 'parent_id', null ]]);
     }
 
     public function scopeSent(Builder $query, int $user_id) {
-        $query->where([
-            [ 'user_id', $user_id ], 
-            [ 'parent_id', null ]
-        ])
-        ->with('commentable:id,name,surname');
+        $query->whereHas('author')->where([[ 'user_id', $user_id ], [ 'parent_id', null ]]);
     }
 
     public function scopeUnread(Builder $query, int $user_id) {
-        $query->where([ [ 'user_id', $user_id ], [ 'is_read', false ] ])
-            ->orWhere([ ['commentable_id', $user_id], ['is_read', false] ]);
+        $query->where([['commentable_id', $user_id], ['is_read', false]])
+            ->orWhere([[ 'user_id', $user_id ], [ 'is_read', false ]]);
     }
 }

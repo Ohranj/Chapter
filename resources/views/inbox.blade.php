@@ -8,10 +8,12 @@
                     <h1 class="text-xl text-amber-500 font-semibold">My Inbox</h1>
                     <small>Use this space to check out your private conversations with members of the community. Additionally, you'll find replies to any public comments you make here.</small>
                     <div class="flex flex-col gap-4 mt-12"> 
-                        <small class="font-semibold ml-auto">Total Unread:- <span x-text="unread"></span></small>
+                        <small class="font-semibold ml-auto">Total Unread:- <span x-text="countUnread"></span></small>
                         <div class="flex flex-col gap-2">
                             <template x-for="item in items">
-                                <small x-text="item.body"></small>
+                                <div class="border border-slate-400 p-2 rounded">
+                                    <small x-text="item.body"></small>
+                                </div>
                             </template>
                             <div class="flex items-center">
                                 <small>Showing page <span x-text="params.currentPage"></span> of <span x-text="params.lastPage"></span></small>
@@ -31,7 +33,7 @@
 <script>
     const inbox = () => ({
         items: [],
-        unread: 0,
+        countUnread: 0,
         params: {
             paginate: 10,
             currentPage: 1,
@@ -45,9 +47,8 @@
                 paginate: this.params.paginate
             }));
             const json = await response.json();
-            this.items = json.data.inbox.data;
-            this.unread = json.data.unread;
-            this.params.lastPage = json.data.inbox.last_page
+            this.items = json.data.inbox;
+            this.countUnread = json.data.countUnread;
         }
     })
 </script>
