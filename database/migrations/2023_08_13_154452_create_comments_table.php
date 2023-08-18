@@ -16,8 +16,9 @@ return new class extends Migration
             $table->bigInteger('user_id')->index();
             $table->bigInteger('parent_id')->nullable();
             $table->string('body', 750);
-            $table->boolean('is_read')->default(false);
+            $table->boolean('user_is_read')->default(true);
             $table->morphs('commentable');
+            $table->boolean('commentable_is_read')->default(false);
             $table->timestamps();
         });
     }

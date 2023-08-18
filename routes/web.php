@@ -56,6 +56,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::group(['prefix' => 'inbox'], function() {
         Route::get('/', [InboxController::class, 'index'])->name('inbox');
         Route::get('/list', [ InboxController::class, 'list' ])->name('list_inbox');
+        Route::put('{comment}/read/toggle', [ InboxController::class, 'toggleIsRead' ])->name('toggle_read_state');
     });
 });
 

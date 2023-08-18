@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,6 +14,18 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [ 'user_id', 'body' ];
+
+    protected $appends = [ 'created_at_human' ];
+
+    /**
+     * Appended Attributes
+     */
+    protected function createdAtHuman(): Attribute {
+        return new Attribute(
+            get: fn() => Carbon::parse($this->created_at)->setTimezone('Europe/London')->format('jS M y \a\t H:i')
+        );
+    }
+    
 
     /**
      * Relations
@@ -23,6 +37,11 @@ class Comment extends Model
     public function author() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function replies() {
+        return $this->hasMany(Comment::class, 'parent_id', 'id')->with('replies');
+    }
+
 
     /**
      * Scopes
@@ -36,7 +55,6 @@ class Comment extends Model
     }
 
     public function scopeUnread(Builder $query, int $user_id) {
-        $query->where([['commentable_id', $user_id], ['is_read', false]])
-            ->orWhere([[ 'user_id', $user_id ], [ 'is_read', false ]]);
+        $query->where([['commentable_id', $user_id], ['commentable_is_read', false]]);
     }
 }

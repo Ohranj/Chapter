@@ -41,6 +41,7 @@
                                             </template>
                                         </div>
                                         <div x-cloak x-show="nabus.selected.item?.id == nabu.id" x-collapse.duration.500ms :class="{'opacity-10': !nabus.selected.item}" class="pl-10">
+                                            <small class="font-semibold">Member since: <span class="text-amber-500" x-text="nabus.selected.item?.created_at_human"></span></small>
                                             <div class="flex justify-end gap-1">
                                                 <button class="text-xs w-[75px] rounded border p-1 font-semibold" :class="isFollowing(nabus.selected.item) ? ' hover:bg-slate-500 border-slate-500' : 'border-indigo-400 hover:border-indigo-500 bg-indigo-400 hover:bg-indigo-500'" @click.stop="followBtnPressed" x-text="isFollowing(nabus.selected.item) ? 'Unfollow' : 'Follow'"></button>
                                                 <button class="text-xs w-[75px] rounded border p-1 font-semibold" @click.stop="nabus.selected.message.show = !nabus.selected.message.show" :class="nabus.selected.message.show ? 'hover:bg-slate-500 border-slate-500' : 'border-green-500 bg-green-500 hover:bg-green-600'">Message</button>
@@ -49,7 +50,7 @@
                                                 <textarea rows="3" class="mt-2 block font-semibold text-xs bg-slate-700 rounded py-1 px-2 focus-visible:outline-none border resize-none border-slate-500 w-full" :placeholder="'Send a direct message to ' + nabus.selected.item?.name + '...'" maxlength="750" @click.stop x-model="nabus.selected.message.content"></textarea>
                                                 <button class="block ml-auto mt-1 font-semibold bg-green-500 w-[75px] rounded text-white text-xs py-1 px-2" @click.stop="sendMessageBtnPressed">Send</button>
                                             </div>
-                                            <small class="font-semibold">Member since: <span class="text-amber-500" x-text="nabus.selected.item?.created_at_human"></span></small>
+                                            
                                         </div>
                                     </div>
                                 </template>

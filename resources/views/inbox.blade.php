@@ -11,17 +11,9 @@
                         <small class="font-semibold ml-auto">Total Unread:- <span x-text="countUnread"></span></small>
                         <div class="flex flex-col gap-2">
                             <template x-for="item in items">
-                                <div class="border border-slate-400 p-2 rounded flex">
-                                    <template x-if="item.hasOwnProperty('author')">
-                                        <small x-text="item.author.initials"></small>
-                                    </template>
-                                    <template x-if="!item.hasOwnProperty('author')">
-                                        <small x-text="item.commentable.initials"></small>
-                                    </template>
-                                    <small x-text="item.body"></small>
-                                </div>
+                                <x-inbox.chat-log />
                             </template>
-                            <div class="flex items-center">
+                            <div x-cloak x-show="items.length" class="flex items-center">
                                 <small>Showing page <span x-text="params.currentPage"></span> of <span x-text="params.lastPage"></span></small>
                                 <div x-cloak x-show="params.lastPage > 1" class="ml-auto text-sm text-slate-800 font-semibold">
                                     <button class="bg-indigo-400 rounded w-[75px]">Prev</button>
@@ -45,6 +37,7 @@
             currentPage: 1,
             lastPage: 1,
         },
+        openMessage: {},
         init() {
             this.fetchInbox();
         },
@@ -54,6 +47,25 @@
             this.items = json.data;
             this.countUnread = json.countUnread;
             this.params.lastPage = json.meta.last_page;
+        },
+        async toggleIsReadState() {
+            if (!this.openMessage.hasOwnProperty('id') || this.openMessage.is_read) {
+                return;
+            }
+            const response = await fetch(route('toggle_read_state', { id: this.openMessage.id }), {
+                method: 'put',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            const json = await response.json();
+            if (response.status != 201) {
+                Alpine.store('toast').toggle(json.message, false)  
+                return;
+            }
+            this.fetchInbox();
         }
     })
 </script>
