@@ -1,4 +1,4 @@
-<div class="flex flex-col border border-slate-400 p-2 rounded cursor-pointer" @click="openMessage = openMessage == item ? {} : item; toggleIsReadState()">
+<div class="flex flex-col border border-slate-400 p-2 rounded cursor-pointer" @click="openMessage = openMessage.id == item.id ? {} : item; toggleIsReadState()">
     <div class="flex gap-2">          
         <div class="w-9 h-9">
             <template x-if="item.inverse.profile.has_avatar">
@@ -18,12 +18,12 @@
     <div x-cloak x-show="openMessage.id == item.id" x-collapse class="flex flex-col gap-2">
         <hr class="border border-slate-600 border-dashed mt-4">
         <div class="flex flex-col">
-            <div :class="openMessage.commentable_id == user.id ? 'text-slate-200 text-right items-end' : 'text-amber-500'" class="flex flex-col">
+            <div :class="openMessage.commentable_id == user.id ? 'text-amber-500 text-right items-end' : 'text-slate-200'" class="flex flex-col">
                 <small class="text-slate-400" x-text="item.created_at_human"></small>
                 <small x-text="item.body"></small>
             </div>   
             <template x-for="reply in item.replies">
-                <div :class="reply.commentable_id == user.id ? 'text-slate-200 text-right items-end' : 'text-amber-500'" class="flex flex-col mt-8">
+                <div :class="reply.commentable_id == user.id ? 'text-amber-500 text-right items-end' : 'text-slate-200'" class="flex flex-col mt-8">
                     <small class="text-slate-400" x-text="reply.created_at_human"></small>
                     <small x-text="reply.body"></small>
                 </div>  

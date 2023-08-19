@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class InboxCollection extends JsonResource
 {
     private $flattenedReplies = [];
-    private $has_read = false;
+    private $has_read = true;
 
     /**
      * Transform the resource collection into an array.
@@ -18,12 +18,15 @@ class InboxCollection extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $this->flattenReplies($this->replies);
+        $this->computeReplies($this->replies);
 
         return [
             'id' => $this->id,
             'body' => $this->body,
-            'is_read' => $this->when(!$this->parent_id, $this->user_id == Auth::id() ? true : $this->commentable_is_read, $this->has_read),
+            'is_read' => $this->when(!count($this->replies), 
+                $this->user_id == Auth::id() ? true : $this->commentable_is_read, 
+                $this->has_read
+            ),
             'commentable_type' => $this->commentable_type,
             'commentable_id' => $this->commentable_id,
             'created_at' => $this->created_at,
@@ -34,15 +37,15 @@ class InboxCollection extends JsonResource
     }
 
     /**
-     * Flatten all the replies to a single layer array
+     * Flatten all the replies to a single layer array and compute the current is_read status
      */
-    private function flattenReplies($replies): array 
+    private function computeReplies($replies): array 
     {
         foreach($replies as $reply) {
-            if ($reply->commentable->id == Auth::id()) {
-                if ($this->has_read) {
-                    $this->has_read = $reply->commentable->is_read;
-                }
+            if ($this->has_read) {
+                $this->has_read = $reply->user_id == Auth::id()
+                    ? true
+                    : $reply->commentable_is_read;
             }
             $this->flattenedReplies[] = [
                 'body' => $reply['body'],

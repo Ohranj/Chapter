@@ -19,7 +19,6 @@ class InboxController extends Controller
     }
 
     /**
-     * @todo add policy to block seeing those that arent for the logged in user
      * @todo Bring in a top level parent column to groupBy on the unread count
      */
     public function list(Request $request) {
