@@ -32,7 +32,8 @@ class InboxCollection extends JsonResource
             'created_at' => $this->created_at,
             'inverse' => $this->when($this->user_id != Auth::id(), $this->author, $this->commentable),
             'created_at_human' => $this->created_at_human,
-            'replies' => $this->flattenedReplies
+            'replies' => $this->flattenedReplies,
+            'body_snippet' => substr($this->body, 0, 45) . '...',
         ];
     }
 

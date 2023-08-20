@@ -131,7 +131,8 @@ class CustomGuard implements StatefulGuard
             'profile', 
             'privacy', 
             'tags', 
-            'following' => fn($q) => $q->randomFriends(3)
+            'following' => fn($q) => $q->randomFriends(4),
+            'receivedComments' => fn($q) => $q->with('author:id,name,surname')->unread($this->id())->take(4)
         ])
         ->where('id', $this->id())
         ->first();

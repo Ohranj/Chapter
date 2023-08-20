@@ -8,7 +8,7 @@
                     <h1 class="text-xl text-amber-500 font-semibold">My Inbox</h1>
                     <small>Use this space to check out your private conversations with members of the community. Additionally, you'll find replies to any public comments you make here.</small>
                     <div class="flex flex-col gap-4 mt-12"> 
-                        <small class="font-semibold ml-auto">Unread:- <span x-text="countUnread"></span></small>
+                        <small class="font-semibold ml-auto">Total Messages Unread:- <span x-text="countUnread"></span></small>
                         <div class="flex flex-col gap-2">
                             <template x-for="item in items">
                                 <x-inbox.chat-log />

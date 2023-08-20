@@ -5,14 +5,14 @@
             <div class="flex grow gap-8 w-full sm:w-5/6 mx-auto">
                 <x-navbarSide />
                 <div class="grow py-4 flex flex-col gap-4">
-                    <div class="flex flex-col gap-2 items-end xl:hidden">
+                    <div class="flex flex-col gap-4 items-end xl:hidden">
                         <a href="/" class="text-amber-500 font-semibold text-sm">
                             <x-svg.group class="w-6 h-6 inline align-middle border rounded-full p-1 box-content shadow shadow-slate-500" stroke="#ffffff" fill="none" />
                             <span class="inline align-middle">My Friends</span>
                         </a>
                         <a href="/" class="text-amber-500 font-semibold text-sm">
                             <x-svg.inbox-stack class="w-6 h-6 inline align-middle border rounded-full p-1 box-content shadow shadow-slate-500" stroke="#ffffff" fill="none" />
-                            <span class="inline align-middle">My Messages</span>
+                            <span class="inline align-middle">My Inbox</span>
                         </a>
                     </div>
                     <x-timelineComment />
@@ -57,16 +57,17 @@
                         </div>
                         <div x-cloak x-show="showInbox" x-collapse class="text-center">
                             <div class="flex flex-col gap-2 divide-y divide-dashed divide-slate-500 text-left">
-                                <div class="group cursor-pointer pt-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                                    <small class="group-hover:italic block">Sender Name1</small>
-                                    <small class="text-slate-400 block group-hover:italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum, ducimus?</small>
-                                    <x-svg.envelope-closed stroke="green" class="ml-auto block w-5 h-5" fill="none" />
-                                </div>
-                                <div class="group cursor-pointer pt-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                                    <small class="group-hover:italic block">Sender Name2</small>
-                                    <small class="text-slate-400 block group-hover:italic">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum, ducimus?</small>
-                                    <x-svg.envelope-closed stroke="red" class="ml-auto block w-5 h-5" fill="none" />
-                                </div>
+                                <template x-if="user.received_comments.length">
+                                    <template x-for="comment in user.received_comments">
+                                        <div class="group cursor-pointer pt-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                                            <small class="group-hover:italic block" x-text="comment.author.full_name"></small>
+                                            <small class="text-slate-400 block group-hover:italic overflow-hidden text-ellipsis whitespace-nowrap" x-text="comment.body"></small>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template x-if="!user.received_comments.length">
+                                    <small class="text-center">You have no unread messages at the minute.</small>
+                                </template>                                
                             </div>
                             <a href="{{ route('inbox') }}">
                                 <small class="text-amber-500 mt-4 block font-semibold cursor-pointer hover:underline decoration-2 underline-offset-2 w-fit inline-block">View all</small>
@@ -108,9 +109,10 @@
             text: '',
             file: null
         },
+        inbox: [],
         deleteEntry: null,
         init() {
-            this.fetchTimeline();
+            this.fetchTimeline()
         },
         async fetchTimeline() {
             const response = await fetch(route('list_timeline_entries'))

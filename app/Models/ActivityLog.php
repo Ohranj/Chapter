@@ -12,7 +12,8 @@ class ActivityLog extends Model
         'Registered' => 'REGISTERED',
         'Profile Updated' => 'PROFILE_UPDATED',
         'Privacy Updated' => 'PRIVACY_UPDATED',
-        'Password Updated' => 'PASSWORD_UPDATED'
+        'Password Updated' => 'PASSWORD_UPDATED',
+        'Created Comment' => 'CREATED_COMMENT'
     ];
 
 

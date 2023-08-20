@@ -19,7 +19,7 @@ class InboxController extends Controller
     }
 
     /**
-     * @todo Bring in a top level parent column to groupBy on the unread count
+     *
      */
     public function list(Request $request) {
         $inbox = Comment::where(fn($q) => $q->received(Auth::id()))
