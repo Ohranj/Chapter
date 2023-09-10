@@ -16,3 +16,13 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress
       - name: Generate app key
         run: php artisan key:generate
+      - name: Amend Permissions
+        run: chmod -R 775 storage/ bootstrap/
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database database/database.sqlite
+      - name: Build and compile assets
+        run: |
+          npm i
+          npm run build
