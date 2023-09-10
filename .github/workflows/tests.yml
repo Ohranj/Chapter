@@ -26,3 +26,11 @@ jobs:
         run: |
           npm i
           npm run build
+      - name: Run application tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+          CACHE_DRIVE: array
+          SESSION_DRIVER: array
+          QUEUE_DRIVER: sync
+        run: php artisan test
