@@ -4,7 +4,6 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
@@ -43,7 +42,8 @@ class AuthenticationTest extends TestCase
 
         $this->post('/login', [
             'email' => 'incorrect@domain.com',
-            'password' => config('app.master_password')
+            'password' => config('app.master_password'),
+            'remember' => false
         ]);
 
         $this->assertGuest();
