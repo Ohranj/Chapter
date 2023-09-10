@@ -22,7 +22,8 @@ class AuthenticationTest extends TestCase
 
         $this->post('/login', [
             'email' => $user->email,
-            'password' => config('app.master_password')
+            'password' => config('app.master_password'),
+            'remember_me' => false,
         ]);      
 
         $this->assertAuthenticated();
