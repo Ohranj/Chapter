@@ -36,5 +36,5 @@ jobs:
           MASTER_NAME: Test
           MASTER_SURNAME: Ing
           MASTER_EMAIL: needtochangetoarealemail@address.com
-          MASTER_PASSWORD: 46rt4rf468r32g7r37SVU*%R*
+          MASTER_PASSWORD: ${{ secrets.DUMMY_PASSWORD }}
         run: php artisan test
