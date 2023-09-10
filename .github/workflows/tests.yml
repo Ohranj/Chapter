@@ -13,6 +13,6 @@ jobs:
       - name: Copy env
         run: php -r "copy('.env.example', '.env');"
       - name: Install composer
-        run: composer install -q --no-ansi --no-interacction --no-scripts --no-progress
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress
       - name: Generate app key
         run: php artisan key:generate
