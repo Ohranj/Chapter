@@ -33,4 +33,8 @@ jobs:
           CACHE_DRIVE: array
           SESSION_DRIVER: array
           QUEUE_DRIVER: sync
+          MASTER_NAME: Test
+          MASTER_SURNAME: Ing
+          MASTER_EMAIL: needtochangetoarealemail@address.com
+          MASTER_PASSWORD: 46rt4rf468r32g7r37SVU*%R*
         run: php artisan test
